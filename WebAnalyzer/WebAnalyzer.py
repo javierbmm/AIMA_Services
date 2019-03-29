@@ -131,9 +131,9 @@ def open_website(url):
     options.add_argument("--start-maximized")
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome('..\\chromedriver-Windows',options=options)
+    browser             = webdriver.Chrome('.\chromedriver.exe',options=options)
     browser.get(url)
-    #wait = WebDriverWait(browser, 6000) 
+    wait = WebDriverWait(browser, 6000) 
     sleep(delay[randint(0,4)]) # Time in seconds.
 
     return browser
@@ -318,11 +318,8 @@ def main():
     browser = open_website(url)
     print('Website opened')
     sleep(2)
-    try:
-        click_futbol_section(browser)
-    except:
-        print('ERROR: Unable to click football section')
-        return
+    click_futbol_section(browser)
+
 
     get_leagues(browser)
 
