@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from random import randint
 
-delay = [1,2,1.5,0.7,2.3]
+delay = [1,2,1.5,2,2.3]
 LINE = "\n--------------------------------------------\n"
 #Users ID's: 
 AIMA_ID = '700187299'   #AIMA_Services
@@ -317,7 +317,6 @@ def main():
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     print('Website opened')
-    sleep(2)
     click_futbol_section(browser)
 
 
