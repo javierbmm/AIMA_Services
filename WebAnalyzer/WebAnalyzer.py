@@ -312,12 +312,9 @@ def test():
 
 def main():
 
-    url = 'https://www.bet365.es/'
-    try:
-        browser = open_website(url)
-    except:
-        print('ERROR: Unable to open website ', url) # Error handling 
-
+    url = 'https://www.bet365.com/'
+    browser = open_website(url)
+    print('Website opened')
     sleep(2)
     try:
         click_futbol_section(browser)
