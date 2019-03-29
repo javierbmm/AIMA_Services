@@ -129,7 +129,7 @@ def open_website(url):
     options.add_argument("--start-maximized")
 
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome(chrome_options=options)
+    browser             = webdriver.Chrome(options=options)
     browser.get(url)
     #wait = WebDriverWait(browser, 6000) 
     sleep(delay[randint(0,4)]) # Time in seconds.
