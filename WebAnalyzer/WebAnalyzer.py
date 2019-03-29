@@ -121,6 +121,7 @@ def bot_send_msg(msg):
     return response.json()
 
 def open_website(url):
+
     # url                 = 'https://www.bet365.es/#/HO/'
     options             = Options()
     #options.headless    = True
