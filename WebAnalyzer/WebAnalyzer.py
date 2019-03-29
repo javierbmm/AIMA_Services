@@ -126,6 +126,9 @@ def open_website(url):
     #options.headless    = True
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
     options.add_argument("user-agent="+user_agent)
+    options.add_argument("--start-maximized")
+
+    # TODO: Catch exception when unable to open website
     browser             = webdriver.Chrome(chrome_options=options)
     browser.get(url)
     #wait = WebDriverWait(browser, 6000) 
@@ -301,7 +304,7 @@ def  scroll_down(browser, times):
 def test():
 
     url = 'https://www.bet365.es/'
-    browser = open_website(url)
+    browser = open_website(url) 
     click_futbol_section(browser)
     scroll_down(browser)
 
@@ -314,7 +317,14 @@ def main():
         browser = open_website(url)
     except:
         print('ERROR: Unable to open website ', url) # Error handling 
-    click_futbol_section(browser)
+
+    sleep(2)
+    try:
+        click_futbol_section(browser)
+    except:
+        print('ERROR: Unable to click football section')
+        return
+
     get_leagues(browser)
 
     return
