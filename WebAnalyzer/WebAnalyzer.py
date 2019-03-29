@@ -129,9 +129,9 @@ def open_website(url):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
     options.add_argument("user-agent="+user_agent)
     options.add_argument("--start-maximized")
-    browser = webdriver.Chrome(ChromeDriverManager().install())
+    #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome(options=options)
+    browser             = webdriver.Chrome('..\\chromedriver-Windows',options=options)
     browser.get(url)
     #wait = WebDriverWait(browser, 6000) 
     sleep(delay[randint(0,4)]) # Time in seconds.
