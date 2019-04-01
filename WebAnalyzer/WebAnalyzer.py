@@ -36,26 +36,36 @@ XPATH_BTTS_YES_NO = '//span[@class="gl-Participant_Name"]'
 XPATH_BTTS_MATCH = '//span[starts-with(@class,"cl-EnhancedDropDown ")]'
 XPATH_BTTS_DATE = '//div[starts-with(@class,"cm-MarketGroupExtraData_TimeStamp ")]'
 XPATH_CLOCK = '//div[@class="pi-CouponParticipantClockInPlay_GameTimerWrapper "]'
-#OVER 2,5:
+#OVER 2.5:
 OVER25_STRING = 'OVER 2,5'
 XPATH_OVER25_CONTAINER = '//span[contains(., "Goles - M")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_OVER25_SECTION = '//div[starts-with(@class,"gl-MarketValuesExplicit2 gl-Market_General gl-Market_PWidth-37-5 ")]'
-XPATH_OVER25_OPTION = '//div[@class="gl-MarketColumnHeader "]'
+XPATH_OVER25_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER25_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
+#OVER 0.5 HT:
+OVER05_HT_STRING = 'OVER 0.5 HT'
+XPATH_OVER05_HT_CLICK_SECTION = '//div[@class="cl-MarketGroupNavBarButton " and contains(.,"1ª/2ª mitad")]'
+XPATH_OVER05_HT_CONTAINER = '//span[contains(., "1º tiempo - Goles")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_OVER05_HT_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
+XPATH_OVER05_HT_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
+
 
 class match_info:
     # Constructor
-    def __init__(self,match_name_,date_,option_,fee_,type_):
+    def __init__(self,match_name_,date_,btts_,over25_,over05ht_):
         # Variables initialization
-        self.match_name = match_name_
-        self.date       = date_
-        self.option     = option_
-        self.fee        = fee_
-        self.type       = type_
+        self.match_name         = match_name_
+        self.date               = date_
+        self.btts_amount        = btts_
+        self.over25_amount      = over25_
+        self.over05_ht_amount   = over05ht_
 
     def to_string(self):
-        string = '\n***MATCH: '+str(self.match_name)+'***\n***TYPE: '+self.type
-        string +='***\n***-Date:*** '+str(self.date)+'\n***-Option:*** '+str(self.option)+'\n***-Amount:*** '+str(self.fee)
+        string = '\n***MATCH: '+str(self.match_name)
+        string +='***\n***-Date:*** '+str(self.date)
+        string +='\n***--BTTS:*** '+str(self.btts_amount)+'\n***--OVER 2.5:*** '+str(self.over25_amount)
+        string +='\n***--OVER 0.5 HT:*** '+str(self.over05_ht_amount)
+
         return string
 
 #Not used classes:
@@ -113,7 +123,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     #Insert your ID below. 
     #AIMA_ID = '700187299' <- for AIMA_Services 
-    bot_chatID = AIMA_ID  
+    bot_chatID = JAVIER_ID  
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -202,47 +212,112 @@ def xpath_exists(xpath,browser):
     return True
 
 def detect_btts(browser):
-    btts = []
-    if not xpath_exists(XPATH_BTTS_CONTAINER,browser): 
-        print('ERROR: Couldn\'t find the element: "Ambos equipos anotarán"')
-        return btts
+    btts = -1
+    
+    if not xpath_exists(XPATH_BTTS_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
+        sleep(delay[randint(0,4)]) # Time in seconds.
+        if not xpath_exists(XPATH_BTTS_CONTAINER,browser):
+            print('ERROR: Couldn\'t find the element: "Ambos equipos anotarán"')
+            return btts
+        #end if
+    #end if
     container = browser.find_element_by_xpath(XPATH_BTTS_CONTAINER)
     section = container.find_elements_by_xpath('.'+XPATH_BTTS_OPTION)
     for item in section:
-        if float(item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text) >= 1.8:
-            yes_or_no   = item.find_element_by_xpath('.'+XPATH_BTTS_YES_NO).text
-            fee         = item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text
-            match       = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
-            date        = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
-            btts.append(match_info(match,date,yes_or_no,fee,BTTS_STRING))
+        yes_or_no   = item.find_element_by_xpath('.'+XPATH_BTTS_YES_NO).text
+        fee         = item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text
+        if float(fee) >= 1.8 and str(yes_or_no) == 'Sí':
+            btts = fee
+        else:
+            continue
+        #end if-else
+    #end for
 
     return btts
 
 def detect_over25(browser):
-    over25 = []
-    if not xpath_exists(XPATH_OVER25_CONTAINER,browser): 
-        print('ERROR: Couldn\'t find the element: "Goles - Más/Menos que"')
-        return over25
+    over25 = -1
+
+    if not xpath_exists(XPATH_OVER25_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
+        sleep(delay[randint(0,4)]) # Time in seconds.
+        if not xpath_exists(XPATH_OVER25_CONTAINER,browser):
+            print('ERROR: Couldn\'t find the element: "Goles - Más/Menos que"')
+            return over25
+        #end if
+    #end if
+
     container = browser.find_element_by_xpath(XPATH_OVER25_CONTAINER)
     section = container.find_elements_by_xpath('.'+XPATH_OVER25_SECTION)
     for item in section:
-        if float(item.find_element_by_xpath('.'+XPATH_OVER25_FEE).text) >= 1.8:
-            option      = item.find_element_by_xpath('.'+XPATH_OVER25_OPTION).text
-            fee         = item.find_element_by_xpath('.'+XPATH_OVER25_FEE).text
-            match       = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text  # XPath for match is the same as BTTS 
-            date        = browser.find_element_by_xpath(XPATH_BTTS_DATE).text   # XPath for date is the same as BTTS
-            over25.append(match_info(match,date,option,fee,OVER25_STRING))
-
+        option      = container.find_element_by_xpath('.'+XPATH_OVER25_OPTION).text
+        fee         = item.find_element_by_xpath('.'+XPATH_OVER25_FEE).text
+        if float(fee) >= 1.8 and option == '2.5':
+            over25 = fee
+        else:
+            continue
+        #end if-else
+    #end for    
     return over25
+
+def detect_over05_ht(browser):
+    over05_ht = -1
+    if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION,browser):
+        print('ERROR: Couldn\'t find the element: "1ª/2ª mitad2"')
+        return over05_ht
+
+    print('Clicking')
+    sleep(delay[randint(0,4)]) # Time in seconds.
+    browser.find_element_by_xpath(XPATH_OVER05_HT_CLICK_SECTION).click()
+    print('clicked')
+    sleep(delay[randint(0,4)]) # Time in seconds.
+    
+    if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
+        sleep(delay[randint(0,4)]) # Time in seconds.
+        if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):
+            print('ERROR: Couldn\'t find the element: "1° tiempo - Goles"')
+            browser.back()
+            return over05_ht
+        #end if
+    #end if
+
+    container = browser.find_element_by_xpath(XPATH_OVER05_HT_CONTAINER)
+    section = browser.find_elements_by_xpath('.'+XPATH_OVER05_HT_OPTION)
+    i = 0 
+    if section[1].text == '0.5': #Index 1 for '0.5 HT' 
+        amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
+        if float(amount[0].text) >= 1.40: #Index 0 for '0.5 HT'
+            over05_ht = amount[0].text
+            print(over05_ht)
+  
+
+    browser.back()
+    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    return over05_ht
 
 def extract_matches_information(browser):
     print('Looking for matches')
     print('->match')
+    btts = detect_btts(browser)
+    over25 = detect_over25(browser)
+    print('btts:'+str(btts))
+    print('over25:'+str(over25))
     match_info_= []
-    match_info_.extend(detect_btts(browser))
-    match_info_.extend(detect_over25(browser))
+
+    if float(btts) < 0 or float(over25) < 0: return match_info_
+    
+    over05_ht = detect_over05_ht(browser)
+    if float(over05_ht) < 0: return match_info_
+
+    match = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
+    date  = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
+    print('got a match')
+    new_match = match_info(match,date,btts,over25,over05_ht)
+    print(new_match.to_string())
+    match_info_.append(new_match)
 
     return match_info_
+    
 
 
 #Not live matches:
@@ -295,7 +370,7 @@ def get_matches(browser, league):
 
     return
 
-def  scroll_down(browser, times):
+def scroll_down(browser, times):
     
     # Scroll down using PAGE_DOWN button
     for i in range(times):
