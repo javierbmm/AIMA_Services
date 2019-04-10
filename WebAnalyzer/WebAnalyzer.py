@@ -29,6 +29,7 @@ XPATH_LIVE_MATCH = '//div[contains(@class,"sl-CouponParticipantWithBookCloses_Cl
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = '//a[@class="hm-HeaderModule_Logo "]'
 XPATH_ESPAÑOL = '//div[contains(text(), "Fútbol")]'
+XPATH_24HRS_BUTTON = '//div[contains(text(), "Próximas 24 h.")]'
 #BTTS:
 BTTS_STRING = 'BTTS'
 XPATH_BTTS_CONTAINER = '//span[contains(text(), "Ambos equipos anotarán")]/ancestor::div[@class="gl-MarketGroup "]' 
@@ -96,6 +97,12 @@ class live_match_info:
         self.e2_tiros_puerta   = e2_tiros_puerta_
         self.e2_corners        = e2_corners_
         self.e2_posesion       = e2_posesion_
+        
+        return
+
+    def get_name(self): 
+        name = str(self.match_name)
+        return name
 
     def to_string(self):
         string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
@@ -106,6 +113,17 @@ class live_match_info:
         string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
 
         return string
+
+    def __str__(self):
+        string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
+        string += '\n***--'+str(self.option)+':*** '+str(self.fee)
+        string += '\n***--Ataques:*** ' + str(self.e1_ataques) +'|'+str(self.e2_ataques)
+        string += '\n***--Ataques peligrosos:*** '+ str(self.e1_a_peligrosos) +'|'+str(self.e2_a_peligrosos)
+        string += '\n***--Tiros a puerta:*** '+ str(self.e1_tiros_puerta) +'|'+str(self.e2_tiros_puerta)
+        string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
+
+        return string
+
 
 
 class match_info:
@@ -157,6 +175,12 @@ class OVER_2_5:
         return string
 ##################
 
+def add_match_list_to_dictionary(match_list_,dict_):
+    for item in match_list_:
+        dict_[item.get_name()] = item
+
+    return
+
 def send_msg_by_groups(bot_message):
     counter = 0
     msg = ''
@@ -181,7 +205,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     #Insert your ID below. 
     #AIMA_ID = '700187299' <- for AIMA_Services 
-    bot_chatID = AIMA_ID  
+    bot_chatID = JAVIER_ID  
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -215,7 +239,7 @@ def click_español(browser):
     return
 
 def click_futbol_section(browser):
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL))) 
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL))) 
 
     futbol_section = browser.find_element_by_xpath(XPATH_ESPAÑOL)
     sleep(delay[randint(0,4)]) # Time in seconds.
@@ -226,7 +250,7 @@ def click_futbol_section(browser):
     return
 
 def click_home_button(browser):
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON))) 
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON))) 
     live_section = browser.find_element_by_xpath(XPATH_HOME_BUTTON)
     sleep(delay[randint(0,4)]) # Time in seconds.
     live_section.click()
@@ -236,7 +260,7 @@ def click_home_button(browser):
     return
 
 def click_live_button(browser):
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON))) 
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON))) 
     live_section = browser.find_element_by_xpath(XPATH_LIVE_BUTTON)
     sleep(delay[randint(0,4)]) # Time in seconds.
     live_section.click()
@@ -246,7 +270,7 @@ def click_live_button(browser):
     return
 
 def click_live_general(browser):
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_GENERAL))) 
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_GENERAL))) 
     live_section = browser.find_element_by_xpath(XPATH_LIVE_GENERAL)
     sleep(delay[randint(0,4)]) # Time in seconds.
     live_section.click()
@@ -255,15 +279,33 @@ def click_live_general(browser):
 
     return
 
+def click_proximas24hrs(browser):
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_24HRS_BUTTON))) 
+    live_section = browser.find_element_by_xpath(XPATH_24HRS_BUTTON)
+    sleep(delay[randint(0,4)]) # Time in seconds.
+    live_section.click()
+    
+    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    return
+
 def get_leagues(browser):
+    click_futbol_section(browser)
+    click_proximas24hrs(browser)
+    match_dict = {}
     #Searching by LEAGUES: 
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
+    try:
+        WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
+    except:
+        return match_dict
+
     LEAGUES = browser.find_elements_by_xpath(XPATH_LEAGUE)
     
     number_of_leagues = len(LEAGUES)
     counter = 0
     go_down = False
     times = 0
+    
     while counter < number_of_leagues:
         if go_down: scroll_down(browser, times)
         WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
@@ -286,14 +328,14 @@ def get_leagues(browser):
             go_down = True
             times += 1
             continue
-        except StaleElementReferenceException:
+        except:
              counter +=1
              print('ERROR: League is not available anymore')
              continue
         # End try-except
 
         #Extracting MATCHES: 
-        get_matches(browser,msg)
+        match_dict.update(get_matches(browser,msg))
         browser.back()
         click_futbol_section(browser)
         counter += 1
@@ -302,7 +344,7 @@ def get_leagues(browser):
         
     browser.quit()
 
-    return 
+    return match_dict
 
 def xpath_exists(xpath,browser):
     try:
@@ -487,7 +529,7 @@ def detect_live_overX(browser, min_amount):
 
     return overX
 
-def extract_live_matches_information(browser):
+def extract_live_matches_information(browser,match_dict):
     print('here')
     WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
     name = browser.find_element_by_xpath(XPATH_LIVE_NAME).text
@@ -558,11 +600,12 @@ def extract_live_matches_information(browser):
                  e2_ataques,e2_a_peligrosos,e2_tiros_puerta,e2_corners,e2_posesion,fee,option)
 
     print(match.to_string())
-    live_match_info_.append(match)
+    if match.get_name() in match_dict: #Check if match is inside 'match_dict'.
+        live_match_info_.append(match)
 
     return live_match_info_
 
-def get_live_leagues(browser):
+def get_live_leagues(browser, match_dict):
     #Searching by LEAGUES: 
     WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_LEAGUE))) 
     LEAGUES = browser.find_elements_by_xpath(XPATH_LIVE_LEAGUE)
@@ -584,7 +627,7 @@ def get_live_leagues(browser):
         print(len(LEAGUES))
 
         #Extracting MATCHES: 
-        get_live_matches(browser,msg, league)
+        get_live_matches(browser,msg, league, match_dict)
         counter += 1
 
     # End while
@@ -593,8 +636,7 @@ def get_live_leagues(browser):
 
     return 
     
-def get_live_matches(browser, msg, league):
-    matches_information = [] # List of matches 
+def get_live_matches(browser, msg, league, match_dict):
     print('getting matches')
 
     try:
@@ -634,8 +676,8 @@ def get_live_matches(browser, msg, league):
         # End try-except
         # Extrating match information: 
         sleep(delay[randint(0,4)]) # Time in seconds.
-        match_info_ = extract_live_matches_information(browser)
-        if match_info_: matches_information.extend(match_info_)
+        match_info_ = extract_live_matches_information(browser, match_dict)
+        if match_info_: matches_information.extend(match_info_) 
         counter+=1
         print('back') #Flag
         sleep(delay[randint(0,4)]) # Time in seconds.
@@ -653,7 +695,13 @@ def get_live_matches(browser, msg, league):
 
 #Not live matches:
 def get_matches(browser, league):
-    WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH))) 
+    print('getmatches')
+    match_dict = {}
+
+    try:
+        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH))) 
+    except:
+        return match_dict
     MATCHES = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
     #List of matches
     counter = 0
@@ -698,7 +746,8 @@ def get_matches(browser, league):
     if matches_information: send_msg_by_groups(messages) # Don't send the message if the matches list is empty
     sleep(delay[randint(0,4)]) # Time in seconds.
 
-    return
+    add_match_list_to_dictionary(matches_information,match_dict)
+    return match_dict
 
 def scroll_down(browser, times):
     
@@ -736,22 +785,30 @@ def main():
     browser = open_website(url)
     click_español(browser)
     before = ''
+    match_dict = {}
     while True:
         click_home_button(browser)
         try:
             now = datetime.now()
-            tomorrow = date.today() + timedelta(days=1)
-            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+            tomorrow = date.today() #+ timedelta(days=1)
+            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 1, 2, 0)
             if now >= tomorrow_0h: 
                 click_futbol_section(browser)
-                get_leagues(browser)
+                match_dict.clear()
+                match_dict.update(get_leagues(browser))
+
+            if not match_dict: #Checking if the dictionary is empty
+                print('Empty dictionary. Trying again')
+                continue
 
             click_futbol_section(browser)
             click_live_button(browser) 
+
+            #TODO: Check matches in dictionary
             get_live_leagues(browser)
 
-        except:
-            print("ERROR: Something happened. Running script again")
+        except Exception as e:
+            print("ERROR: "+e+".\nTrying again")
             continue
         #end try-except
         sleep(5*60)
