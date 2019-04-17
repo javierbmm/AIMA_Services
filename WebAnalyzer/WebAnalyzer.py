@@ -136,6 +136,10 @@ class match_info:
         self.over25_amount      = over25_
         self.over05_ht_amount   = over05ht_
 
+    def get_name(self): 
+        name = str(self.match_name)
+        return name
+
     def to_string(self):
         string = '\n***MATCH: '+str(self.match_name)
         string +='***\n***-Date:*** '+str(self.date)
@@ -791,8 +795,9 @@ def main():
         try:
             now = datetime.now()
             tomorrow = date.today() #+ timedelta(days=1)
-            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 1, 2, 0)
+            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
             if now >= tomorrow_0h: 
+                print('pregames')
                 click_futbol_section(browser)
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
@@ -801,6 +806,7 @@ def main():
                 print('Empty dictionary. Trying again')
                 continue
 
+            print('live')
             click_futbol_section(browser)
             click_live_button(browser) 
 
@@ -808,7 +814,7 @@ def main():
             get_live_leagues(browser)
 
         except Exception as e:
-            print("ERROR: "+e+".\nTrying again")
+            print(str(e))
             continue
         #end try-except
         sleep(5*60)
