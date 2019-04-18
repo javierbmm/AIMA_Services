@@ -19,3 +19,5 @@ source ../bin/activate
 echo "Installing requirements"
 pip install -r requirements.txt
 echo "Installation successfully done"
+
+chmod u+x Executer.sh
