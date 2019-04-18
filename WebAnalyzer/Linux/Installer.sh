@@ -3,7 +3,7 @@ sudo chmod u+x Installer.sh
 
 echo "Setting virtual environment"
 cd .. 
-py -m virtualenv .
+virtualenv --python python3 .
 source bin/activate
 cd WebAnalyzer/Linux
 echo "Installing requirements"
