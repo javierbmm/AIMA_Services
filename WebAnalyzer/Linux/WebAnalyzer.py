@@ -241,7 +241,6 @@ def open_website(url):
 def click_español(browser):
     #Navigation:
     sleep(delay[randint(0,4)]) # Time in seconds.
-    sleep(delay[randint(0,4)]) # Time in seconds.
     browser.find_element_by_link_text("Español").click()
     sleep(delay[randint(0,4)]) # Time in seconds.
   
