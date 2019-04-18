@@ -1,5 +1,5 @@
 #!/bin/bash
-chmod u+x Installer.sh
+sudo chmod u+x Installer.sh
 
 echo "Setting virtual environment"
 cd .. 
