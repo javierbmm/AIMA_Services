@@ -248,7 +248,7 @@ def click_español(browser):
 
 def click_futbol_section(browser):
    # WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL))) 
-    browser.switch_to_window(browser.window_handles[1])
+    #browser.switch_to_window(browser.window_handles[1])
 
     futbol_section = browser.find_element_by_xpath('/html/body/div[1]/div/div[2]/div[1]/div/div[1]/div/div/div[16]')
     sleep(delay[randint(0,4)]) # Time in seconds.
