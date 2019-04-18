@@ -222,12 +222,14 @@ def open_website(url):
     # url                 = 'https://www.bet365.es/#/HO/'
     options             = Options()
     options.headless    = True
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
-    options.add_argument("user-agent="+user_agent)
-    options.add_argument("--start-maximized")
+    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36'
+    options.add_argument('user-agent='+user_agent)
+    options.add_argument('--start-maximized')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--ignore-certificate-errors')
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome('.\chromedriver.exe',options=options)
+    browser             = webdriver.Chrome('./chromedriver',options=options)
     browser.get(url)
     wait = WebDriverWait(browser, 6000) 
     sleep(delay[randint(0,4)]) # Time in seconds.
@@ -788,10 +790,12 @@ def main():
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     click_español(browser)
+    print('clicked "Español"')
     before = ''
     match_dict = {}
     while True:
-        click_home_button(browser)
+        print('Clicking home button')
+        #click_home_button(browser)
         try:
             now = datetime.now()
             tomorrow = date.today() #+ timedelta(days=1)
