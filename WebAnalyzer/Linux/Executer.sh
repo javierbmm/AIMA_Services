@@ -1,5 +1,5 @@
 #!/bin/bash
-chmod +x Executer.sh
+chmod u+x Executer.sh
 
 echo "Opening environment"
 cd .. 
