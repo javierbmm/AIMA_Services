@@ -13,9 +13,9 @@ sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver
 
 echo "Setting virtual environment"
-virtualenv --python python3 .
+virtualenv --python python3 env
 nohup sleep 10 &
-source ../bin/activate
+source env/bin/activate
 echo "Installing requirements"
 pip install -r requirements.txt
 echo "Installation successfully done"

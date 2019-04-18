@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo "Opening environment"
-source ../bin/activate
+source env/bin/activate
 python3 WebAnalyzer.py
