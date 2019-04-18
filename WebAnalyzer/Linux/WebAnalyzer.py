@@ -792,9 +792,11 @@ def main():
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     click_español(browser)
+    print('clicked "Español"')
     before = ''
     match_dict = {}
     while True:
+        print('Clicking home button')
         click_home_button(browser)
         try:
             now = datetime.now()
