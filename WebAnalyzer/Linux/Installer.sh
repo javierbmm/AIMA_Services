@@ -7,6 +7,11 @@ sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main"
 sudo apt-get -y update
 sudo apt-get -y install google-chrome-stable
 
+echo "Setting chromedriver"
+sudo mv chromedriver /usr/bin/chromedriver
+sudo chown root:root /usr/bin/chromedriver
+sudo chmod +x /usr/bin/chromedriver
+
 echo "Setting virtual environment"
 virtualenv --python python3 .
 nohup sleep 10 &
