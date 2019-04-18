@@ -799,31 +799,31 @@ def main():
     while True:
         print('Clicking home button')
         #click_home_button(browser)
-        try:
-            now = datetime.now()
-            tomorrow = date.today() #+ timedelta(days=1)
-            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-            if now >= tomorrow_0h: 
-                print('pregames')
-                click_futbol_section(browser)
-                match_dict.clear()
-                match_dict.update(get_leagues(browser))
-
-            if not match_dict: #Checking if the dictionary is empty
-                print('Empty dictionary. Trying again')
-                continue
-
-            print('live')
+    #try:
+        now = datetime.now()
+        tomorrow = date.today() #+ timedelta(days=1)
+        tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+        if now >= tomorrow_0h: 
+            print('pregames')
             click_futbol_section(browser)
-            click_live_button(browser) 
+            match_dict.clear()
+            match_dict.update(get_leagues(browser))
 
-            #TODO: Check matches in dictionary
-            get_live_leagues(browser)
-
-        except Exception as e:
-            print(str(e))
+        if not match_dict: #Checking if the dictionary is empty
+            print('Empty dictionary. Trying again')
             continue
-        #end try-except
+
+        print('live')
+        click_futbol_section(browser)
+        click_live_button(browser) 
+
+        #TODO: Check matches in dictionary
+        get_live_leagues(browser)
+
+    #except Exception as e:
+        print(str(e))
+        continue
+    #end try-except
         sleep(5*60)
 
     #end while
