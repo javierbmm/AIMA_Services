@@ -221,7 +221,7 @@ def bot_send_msg(msg):
 
 def open_website(url):
 
-    # url                 = 'https://www.bet365.com'
+    # url                 = 'https://www.bet365.es'
     options             = Options()
     options.headless    = True
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
@@ -245,7 +245,7 @@ def click_español(browser):
     #Navigation:
     sleep(delay[randint(0,4)]) # Time in seconds.
     sleep(delay[randint(0,4)]) # Time in seconds.
-    español = browser.find_element_by_link_text("Español")
+    español = browser.find_element_by_link_text("English")
     español.send_keys(Keys.ENTER)
     sleep(delay[randint(0,4)]) # Time in seconds.
   
