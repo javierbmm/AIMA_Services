@@ -428,6 +428,8 @@ def detect_over05_ht(browser, min_amount):  #min_amount: 1.40
     sleep(delay[randint(0,4)]) # Time in seconds.
     browser.find_element_by_xpath(XPATH_OVER05_HT_CLICK_SECTION).click()
     print('clicked')
+    browser.save_screenshot("screenshot4.png")
+
     sleep(delay[randint(0,4)]) # Time in seconds.
     
     if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
@@ -736,6 +738,8 @@ def get_matches(browser, league):
         sleep(delay[randint(0,4)]) # Time in seconds.
         try:
             match.click()
+            browser.save_screenshot("screenshot3.png")
+
             sleep(delay[randint(0,4)]) # Time in seconds.
         except ElementNotSelectableException:
             #browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
