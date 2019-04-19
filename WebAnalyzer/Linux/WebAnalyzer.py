@@ -245,7 +245,7 @@ def click_español(browser):
     #Navigation:
     sleep(delay[randint(0,4)]) # Time in seconds.
     sleep(delay[randint(0,4)]) # Time in seconds.
-    español = browser.find_element_by_link_text("English")
+    español = browser.find_element_by_link_text("Español")
     español.click()
     sleep(delay[randint(0,4)]) # Time in seconds.
   
@@ -810,7 +810,7 @@ def main():
     match_dict = {}
     while True:
         print('Clicking home button')
-        #browser.save_screenshot("screenshot.png")
+        
 
         click_home_button(browser)
 
@@ -821,6 +821,7 @@ def main():
         if now >= tomorrow_0h: 
             print('pregames')
             click_futbol_section(browser)
+            browser.save_screenshot("screenshot.png")
             print("clicked futbol section")
             match_dict.clear()
             match_dict.update(get_leagues(browser))
