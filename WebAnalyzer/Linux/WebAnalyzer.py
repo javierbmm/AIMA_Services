@@ -32,6 +32,8 @@ XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
 XPATH_ESPAÑOL = '//div[contains(text(), "Soccer")]'
 XPATH_24HRS_BUTTON = '//div[contains(text(), "Next 24 hrs")]'
+XPATH_ODDS_DROPDOWN = "//a[@class='hm-DropDownSelections_Button hm-DropDownSelections_DropLink ' and contains(.,'Odds')]"
+XPATH_ODDS_DECIMAL = "//a[starts-with(@class,'hm-DropDownSelections_Item ') and contains(.,'Decimal')]"
 #BTTS:
 BTTS_STRING = 'BTTS'
 XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]' 
@@ -274,6 +276,17 @@ def click_home_button(browser):
 
     return
 
+def set_decimal_odds(browser):
+    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_ODDS_DROPDOWN))) 
+    drop_down = browser.find_element_by_xpath(XPATH_ODDS_DROPDOWN)
+    drop_down.click()
+    sleep(delay[randint(0,4)]) # Time in seconds.
+    browser.find_element_by_xpath(XPATH_ODDS_DECIMAL).click()
+
+    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    return
+    
 def click_live_button(browser):
     WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON))) 
     live_section = browser.find_element_by_xpath(XPATH_LIVE_BUTTON)
@@ -806,11 +819,8 @@ def main():
     browser = open_website(url)
     click_español(browser)
     print('clicked "Español"')
-    file = open("page.txt","w")
-    file.write(browser.page_source)
-    file.close()
     sleep(delay[randint(0,4)]) # Time in seconds.
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    set_decimal_odds(browser)
     before = ''
     match_dict = {}
     while True:
