@@ -29,7 +29,7 @@ XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Nam
 XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-CouponParticipantIPPGBase "]'
 XPATH_LIVE_MATCH = '//div[contains(@class,"sl-CouponParticipantWithBookCloses_ClockPaddingLeft")]'
 XPATH_HOME = '//'
-XPATH_HOME_BUTTON = '//a[@class="hm-HeaderModule_Logo "]'
+XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
 XPATH_ESPAÑOL = '//div[contains(text(), "Fútbol")]'
 XPATH_24HRS_BUTTON = '//div[contains(text(), "Próximas 24 h.")]'
 #BTTS:
