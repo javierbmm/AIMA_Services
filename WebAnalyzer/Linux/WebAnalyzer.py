@@ -811,7 +811,6 @@ def main():
     while True:
         print('Clicking home button')
         click_home_button(browser)
-        print(browser.window_handles[1])
         browser.save_screenshot("screenshot.png")
 
     #try:
