@@ -810,9 +810,9 @@ def main():
     while True:
         print('Clicking home button')
         
-
-        click_home_button(browser)
         browser.save_screenshot("screenshot.png")
+        click_home_button(browser)
+        browser.save_screenshot("screenshot2.png")
     #try:
         now = datetime.now()
         tomorrow = date.today() #+ timedelta(days=1)
