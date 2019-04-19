@@ -801,6 +801,8 @@ def main():
     print('clicked "Español"')
     print('___________________________________')
     print(browser.page_source)
+    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0,4)]) # Time in seconds.
     browser.save_screenshot("screenshot.png")
     before = ''
     match_dict = {}
