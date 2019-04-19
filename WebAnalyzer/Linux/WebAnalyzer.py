@@ -823,39 +823,43 @@ def main():
     set_decimal_odds(browser)
     before = ''
     match_dict = {}
+    now = datetime.now()
+    tomorrow = date.today() + timedelta(days=1)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
         print('Clicking home button')
         
         browser.save_screenshot("screenshot.png")
         click_home_button(browser)
         browser.save_screenshot("screenshot2.png")
-    #try:
-        now = datetime.now()
-        tomorrow = date.today() #+ timedelta(days=1)
-        tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-        if now >= tomorrow_0h: 
-            print('pregames')
+        try:
+            if now >= tomorrow_0h: 
+                print('pregames')
+                click_futbol_section(browser)
+                browser.save_screenshot("screenshot.png")
+                print("clicked futbol section")
+                match_dict.clear()
+                match_dict.update(get_leagues(browser))
+                # Updating dates: 
+                now = datetime.now()
+                tomorrow = date.today() + timedelta(days=1)
+                tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+
+            if not match_dict: #Checking if the dictionary is empty
+                print('Empty dictionary. Trying again')
+                continue
+
+            print('live')
             click_futbol_section(browser)
-            browser.save_screenshot("screenshot.png")
-            print("clicked futbol section")
-            match_dict.clear()
-            match_dict.update(get_leagues(browser))
+            click_live_button(browser) 
 
-        if not match_dict: #Checking if the dictionary is empty
-            print('Empty dictionary. Trying again')
+            #TODO: Check matches in dictionary
+            get_live_leagues(browser)
+
+        except Exception as e:
+            print(str(e))
             continue
-
-        print('live')
-        click_futbol_section(browser)
-        click_live_button(browser) 
-
-        #TODO: Check matches in dictionary
-        get_live_leagues(browser)
-
-    #except Exception as e:
-        print(str(e))
-        continue
-    #end try-except
+        #end try-except
         sleep(5*60)
 
     #end while
