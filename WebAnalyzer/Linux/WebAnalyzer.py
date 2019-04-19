@@ -30,12 +30,12 @@ XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-Co
 XPATH_LIVE_MATCH = '//div[contains(@class,"sl-CouponParticipantWithBookCloses_ClockPaddingLeft")]'
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
-XPATH_ESPAÑOL = '//div[contains(text(), "Fútbol")]'
-XPATH_24HRS_BUTTON = '//div[contains(text(), "Próximas 24 h.")]'
+XPATH_ESPAÑOL = '//div[contains(text(), "Soccer")]'
+XPATH_24HRS_BUTTON = '//div[contains(text(), "Next 24 hrs")]'
 #BTTS:
 BTTS_STRING = 'BTTS'
-XPATH_BTTS_CONTAINER = '//span[contains(text(), "Ambos equipos anotarán")]/ancestor::div[@class="gl-MarketGroup "]' 
-XPATH_BTTS = '//span[contains(text(), "Ambos equipos anotarán")]' # Useless
+XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]' 
+XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]' # Useless
 XPATH_BTTS_OPTION = '//div[@class="gl-Participant gl-Participant_General gl-Market_CN-2 "]'
 XPATH_BTTS_FEE = '//span[@class="gl-Participant_Odds"]'
 XPATH_BTTS_YES_NO = '//span[@class="gl-Participant_Name"]'
@@ -44,19 +44,19 @@ XPATH_BTTS_DATE = '//div[starts-with(@class,"cm-MarketGroupExtraData_TimeStamp "
 XPATH_CLOCK = '//div[@class="pi-CouponParticipantClockInPlay_GameTimerWrapper "]'
 #OVER 2.5:
 OVER25_STRING = 'OVER 2,5'
-XPATH_OVER25_CONTAINER = '//span[contains(., "Goles - M")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_OVER25_CONTAINER = '//span[contains(., "Goals Over/Under")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_OVER25_SECTION = '//div[starts-with(@class,"gl-MarketValuesExplicit2 gl-Market_General gl-Market_PWidth-37-5 ")]'
 XPATH_OVER25_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER25_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
 #OVER 0.5 HT:
 OVER05_HT_STRING = 'OVER 0.5 HT'
-XPATH_OVER05_HT_CLICK_SECTION = '//div[@class="cl-MarketGroupNavBarButton " and contains(.,"1ª/2ª mitad")]'
-XPATH_OVER05_HT_CONTAINER = '//span[contains(., "1º tiempo - Goles")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_OVER05_HT_CLICK_SECTION = '//div[@class="cl-MarketGroupNavBarButton " and contains(.,"Half")]'
+XPATH_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_OVER05_HT_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER05_HT_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
 #LIVE MATCHES:
 XPATH_LIVE_BUTTON = '//div[@class="sl-LiveInPlayHeader_LiveLabel "]'
-XPATH_LIVE_GENERAL = '//div[starts-with(@class,"ip-ControlBar_BBarItem ") and contains(.,"General")]'
+XPATH_LIVE_GENERAL = '//div[starts-with(@class,"ip-ControlBar_BBarItem ") and contains(.,"Overview")]'
 XPATH_LIVE_LEAGUE = '//div[@class="ipo-Competition ipo-Competition-open "]'
 XPATH_LIVE_LEAGUE_NAME = '//div[@class="ipo-CompetitionButton_NameLabel ipo-CompetitionButton_NameLabelHasMarketHeading "]'
 XPATH_LIVE_MATCH = '//div[@class="ipo-ScoreDisplayStandard_Wrapper "]'
@@ -72,9 +72,9 @@ starts-with(@class,"ml1-AllStats_StatsBarsColumn ml1-AllStats_StatsBarsColumn")]
 XPATH_LIVE_ALL_STATS = '//div[@class="ml1-AllStats_StatsCharts "]'
 XPATH_LIVE_TEAM_1 = '//div[@class="ml1-StatWheel_Team1Text "] | //span[@class="ml1-SoccerStatsBar_MiniBarValue ml1-SoccerStatsBar_MiniBarValue-1 "]'
 XPATH_LIVE_TEAM_2 = '//div[@class="ml1-StatWheel_Team2Text "] | //span[@class="ml1-SoccerStatsBar_MiniBarValue ml1-SoccerStatsBar_MiniBarValue-2 "]'
-XPATH_LIVE_OVER05_HT_CONTAINER = '//span[contains(., "1ª mitad - Goles")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_LIVE_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_LIVE_CORNERS = '//div[@class="ipe-SoccerGridColumn ipe-SoccerGridColumn_ICorner "]//div[@class="ipe-SoccerGridCell "]'
-XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Goles en el partido")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 
 
 
