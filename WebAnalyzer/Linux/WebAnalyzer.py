@@ -821,6 +821,7 @@ def main():
         if now >= tomorrow_0h: 
             print('pregames')
             click_futbol_section(browser)
+            print("clicked futbol section")
             match_dict.clear()
             match_dict.update(get_leagues(browser))
 
