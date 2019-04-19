@@ -824,8 +824,8 @@ def main():
     before = ''
     match_dict = {}
     now = datetime.now()
-    tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 20, 30, 0)
+    tomorrow = date.today() #+ timedelta(days=1)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 21, 0, 0)
     while True:
         print('Clicking home button')
         
