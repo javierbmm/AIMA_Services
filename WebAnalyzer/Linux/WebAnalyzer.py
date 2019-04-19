@@ -806,13 +806,13 @@ def main():
     file.close()
     sleep(delay[randint(0,4)]) # Time in seconds.
     sleep(delay[randint(0,4)]) # Time in seconds.
-    browser.save_screenshot("screenshot.png")
     before = ''
     match_dict = {}
     while True:
         print('Clicking home button')
         click_home_button(browser)
         print(browser.window_handles)
+        browser.save_screenshot("screenshot.png")
 
     #try:
         now = datetime.now()
