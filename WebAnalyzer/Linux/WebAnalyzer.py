@@ -800,6 +800,7 @@ def main():
     print('clicked "Español"')
     print('___________________________________')
     print(browser.page_source)
+    browser.save_screenshot("screenshot.png")
     before = ''
     match_dict = {}
     while True:
