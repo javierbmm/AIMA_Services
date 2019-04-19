@@ -246,7 +246,7 @@ def click_español(browser):
     sleep(delay[randint(0,4)]) # Time in seconds.
     sleep(delay[randint(0,4)]) # Time in seconds.
     español = browser.find_element_by_link_text("English")
-    español.click().perform()
+    español.send_keys(Keys.ENTER)
     sleep(delay[randint(0,4)]) # Time in seconds.
   
     return
