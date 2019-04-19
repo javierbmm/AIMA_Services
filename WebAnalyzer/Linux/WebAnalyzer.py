@@ -261,7 +261,9 @@ def click_futbol_section(browser):
     return
 
 def click_home_button(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON))) 
+    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    #WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON))) 
     live_section = browser.find_element_by_xpath(XPATH_HOME_BUTTON)
     sleep(delay[randint(0,4)]) # Time in seconds.
     live_section.click()
@@ -800,7 +802,7 @@ def main():
     match_dict = {}
     while True:
         print('Clicking home button')
-        #click_home_button(browser)
+        click_home_button(browser)
     #try:
         now = datetime.now()
         tomorrow = date.today() #+ timedelta(days=1)
