@@ -389,7 +389,7 @@ def detect_btts(browser,min_amount): #min_amount: 1.80
     if not xpath_exists(XPATH_BTTS_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
         sleep(delay[randint(0,4)]) # Time in seconds.
         if not xpath_exists(XPATH_BTTS_CONTAINER,browser):
-            print('ERROR: Couldn\'t find the element: "Ambos equipos anotarán"')
+            print('ERROR: Couldn\'t find the element: "Both Teams to Score"')
             return btts
         #end if
     #end if
@@ -398,7 +398,7 @@ def detect_btts(browser,min_amount): #min_amount: 1.80
     for item in section:
         yes_or_no   = item.find_element_by_xpath('.'+XPATH_BTTS_YES_NO).text
         fee         = item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text
-        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Sí':
+        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes':
             btts = fee
         else:
             continue
@@ -413,7 +413,7 @@ def detect_over25(browser,min_amount): #min_amount: 1.80
     if not xpath_exists(XPATH_OVER25_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
         sleep(delay[randint(0,4)]) # Time in seconds.
         if not xpath_exists(XPATH_OVER25_CONTAINER,browser):
-            print('ERROR: Couldn\'t find the element: "Goles - Más/Menos que"')
+            print('ERROR: Couldn\'t find the element: "Goals Over/Under"')
             return over25
         #end if
     #end if
@@ -434,7 +434,7 @@ def detect_over25(browser,min_amount): #min_amount: 1.80
 def detect_over05_ht(browser, min_amount):  #min_amount: 1.40 
     over05_ht = -1
     if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION,browser):
-        print('ERROR: Couldn\'t find the element: "1ª/2ª mitad"')
+        print('ERROR: Couldn\'t find the element: "Half"')
         return over05_ht
 
     print('Clicking')
@@ -448,7 +448,7 @@ def detect_over05_ht(browser, min_amount):  #min_amount: 1.40
     if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
         sleep(delay[randint(0,4)]) # Time in seconds.
         if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):
-            print('ERROR: Couldn\'t find the element: "1° tiempo - Goles"')
+            print('ERROR: Couldn\'t find the element: "First Half Goals"')
             browser.back()
             return over05_ht
         #end if
@@ -818,7 +818,7 @@ def main():
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     click_español(browser)
-    print('clicked "Español"')
+    print('clicked "English"')
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     before = ''
