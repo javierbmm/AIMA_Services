@@ -801,8 +801,9 @@ def main():
     browser = open_website(url)
     click_español(browser)
     print('clicked "Español"')
-    print('___________________________________')
-    print(browser.page_source)
+    file = open("page.txt","w")
+    file.write(browser.page_source)
+    file.close()
     sleep(delay[randint(0,4)]) # Time in seconds.
     sleep(delay[randint(0,4)]) # Time in seconds.
     browser.save_screenshot("screenshot.png")
