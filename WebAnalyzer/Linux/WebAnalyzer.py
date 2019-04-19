@@ -798,8 +798,8 @@ def main():
     browser = open_website(url)
     click_español(browser)
     print('clicked "Español"')
-    print(browser.window_handles)
-
+    print('___________________________________')
+    print(browser.page_source)
     before = ''
     match_dict = {}
     while True:
