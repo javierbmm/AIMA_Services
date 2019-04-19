@@ -224,7 +224,7 @@ def open_website(url):
     # url                 = 'https://www.bet365.es/#/HO/'
     options             = Options()
     options.headless    = True
-    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36'
+    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
     options.add_argument('user-agent='+user_agent)
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-dev-shm-usage")
@@ -810,7 +810,7 @@ def main():
     match_dict = {}
     while True:
         print('Clicking home button')
-        browser.save_screenshot("screenshot.png")
+        #browser.save_screenshot("screenshot.png")
 
         click_home_button(browser)
 
