@@ -738,9 +738,9 @@ def get_matches(browser, league):
         sleep(delay[randint(0,4)]) # Time in seconds.
         try:
             match.click()
+            sleep(delay[randint(0,4)]) # Time in seconds.
             browser.save_screenshot("screenshot3.png")
 
-            sleep(delay[randint(0,4)]) # Time in seconds.
         except ElementNotSelectableException:
             #browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             go_down = True
