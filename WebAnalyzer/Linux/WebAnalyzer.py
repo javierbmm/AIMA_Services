@@ -221,7 +221,7 @@ def bot_send_msg(msg):
 
 def open_website(url):
 
-    # url                 = 'https://www.bet365.es/#/HO/'
+    # url                 = 'https://www.bet365.com'
     options             = Options()
     options.headless    = True
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
