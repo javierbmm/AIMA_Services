@@ -307,6 +307,8 @@ def click_proximas24hrs(browser):
 def get_leagues(browser):
     click_futbol_section(browser)
     click_proximas24hrs(browser)
+    browser.save_screenshot("screenshot3.png")
+
     match_dict = {}
     #Searching by LEAGUES: 
     try:
