@@ -230,9 +230,12 @@ def open_website(url):
     options.add_argument('--no-sandbox')
     options.add_argument('--ignore-certificate-errors')
     options.add_argument("--disable-dev-shm-usage")
+
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
     browser             = webdriver.Chrome('/usr/bin/chromedriver',options=options)
+    browser.set_window_size(1440, 900)
+
     browser.get(url)
     wait = WebDriverWait(browser, 6000) 
     sleep(delay[randint(0,4)]) # Time in seconds.
