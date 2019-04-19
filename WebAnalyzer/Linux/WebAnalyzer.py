@@ -229,7 +229,7 @@ def open_website(url):
     options.add_argument('--start-maximized')
     options.add_argument('--no-sandbox')
     options.add_argument('--ignore-certificate-errors')
-    options.addArguments("--disable-dev-shm-usage")
+    options.add_argument("--disable-dev-shm-usage")
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
     browser             = webdriver.Chrome('/usr/bin/chromedriver',options=options)
