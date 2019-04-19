@@ -236,7 +236,6 @@ def open_website(url):
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
     browser             = webdriver.Chrome('/usr/bin/chromedriver',options=options)
-    browser.set_window_size(1440, 900)
 
     browser.get(url)
     wait = WebDriverWait(browser, 6000) 
