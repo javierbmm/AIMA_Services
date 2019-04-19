@@ -810,8 +810,9 @@ def main():
     match_dict = {}
     while True:
         print('Clicking home button')
-        click_home_button(browser)
         browser.save_screenshot("screenshot.png")
+
+        click_home_button(browser)
 
     #try:
         now = datetime.now()
