@@ -825,10 +825,10 @@ def main():
     match_dict = {}
     now = datetime.now()
     tomorrow = date.today() #+ timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 40, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 50, 0)
     while True:
         print('Clicking home button')
-        
+        now = datetime.now()
         browser.save_screenshot("screenshot.png")
         click_home_button(browser)
         browser.save_screenshot("screenshot2.png")
@@ -841,7 +841,6 @@ def main():
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Updating dates: 
-                now = datetime.now()
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
