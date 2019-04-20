@@ -829,14 +829,11 @@ def main():
     while True:
         print('Clicking home button')
         now = datetime.now()
-        browser.save_screenshot("screenshot.png")
         click_home_button(browser)
-        browser.save_screenshot("screenshot2.png")
         try:
             if now >= tomorrow_0h: 
                 print('pregames')
                 click_futbol_section(browser)
-                browser.save_screenshot("screenshot.png")
                 print("clicked futbol section")
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
