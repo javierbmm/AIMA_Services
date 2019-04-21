@@ -841,10 +841,11 @@ def main():
     tomorrow = date.today() #+ timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 0, 0)
     while True:
-        print('Clicking home button')
-        now = datetime.now()
-        click_home_button(browser)
         try:
+            print('Clicking home button')
+            now = datetime.now()
+            click_home_button(browser)
+            
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
