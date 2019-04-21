@@ -844,13 +844,12 @@ def main():
         try:
             print('Clicking home button')
             now = datetime.now()
-            click_home_button(browser)
-            
+            click_futbol_section(browser)
+
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
                 print('pregames')
-                click_futbol_section(browser)
                 print("clicked futbol section")
                 # Updating match_dict
                 match_dict.clear()
@@ -864,7 +863,7 @@ def main():
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
             if dict_updated:
-                load_from_file(file_name,match_dict)
+                load_from_file(file_name, match_dict)
 
             if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
