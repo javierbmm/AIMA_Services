@@ -870,8 +870,7 @@ def main():
 
 
 
-        except Exception as e:
-            print(str(e))
+        except:
             continue
         #end try-except
         sleep(5*60)
