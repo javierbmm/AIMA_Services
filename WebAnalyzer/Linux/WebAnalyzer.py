@@ -843,7 +843,8 @@ def main():
     while True:
         print('Clicking soccer button')
         now = datetime.now()
-        click_futbol_section(browser)
+        #click_futbol_section(browser)
+        print('clicked it')
         try:
             if now >= tomorrow_0h:
                 dict_updated = False
