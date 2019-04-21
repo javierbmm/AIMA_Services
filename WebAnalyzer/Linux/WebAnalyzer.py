@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+import selenium.common.exceptions
 from selenium.common.exceptions import NoSuchElementException   
 from selenium.common.exceptions import ElementNotSelectableException  
 from selenium.common.exceptions import StaleElementReferenceException  
@@ -14,6 +15,7 @@ from selenium.common.exceptions import ElementNotVisibleException
 from selenium.webdriver.common.keys import Keys 
 from selenium.webdriver.common.by import By 
 from datetime import datetime, time, timedelta, date
+import urllib3.exceptions
 from time import sleep
 from random import randint
 
@@ -809,6 +811,9 @@ def load_from_file(file_name, object):
     # load the object from the file into var b
     object = pickle.load(fileObject)
 
+def delete_file_content(fName):
+    with open(fName, "w"):
+        pass
 def test():
 
     url = 'https://www.bet365.es/'
@@ -842,6 +847,7 @@ def main():
         try:
             if now >= tomorrow_0h:
                 dict_updated = False
+                delete_file_content(file_name)
                 print('pregames')
                 click_futbol_section(browser)
                 print("clicked futbol section")
