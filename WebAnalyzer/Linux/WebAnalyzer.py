@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import requests
+import pickle
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait 
@@ -19,10 +20,10 @@ from random import randint
 
 delay = [1,2,1.5,2,2.3]
 LINE = "\n--------------------------------------------\n"
-#Users ID's: 
-AIMA_ID = '700187299'   #AIMA_Services
-JAVIER_ID = '394580187' #Javier Merida
-#List of XPath's:
+# Users ID's:
+AIMA_ID = '700187299'   # AIMA_Services
+JAVIER_ID = '394580187' # Javier Merida
+# List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
 XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
@@ -34,7 +35,7 @@ XPATH_ESPAÑOL = '//div[contains(text(), "Soccer")]'
 XPATH_24HRS_BUTTON = '//div[contains(text(), "Next 24 hrs")]'
 XPATH_ODDS_DROPDOWN = "//a[@class='hm-DropDownSelections_Button hm-DropDownSelections_DropLink ' and contains(.,'Odds')]"
 XPATH_ODDS_DECIMAL = "//a[starts-with(@class,'hm-DropDownSelections_Item ') and contains(.,'Decimal')]"
-#BTTS:
+# BTTS:
 BTTS_STRING = 'BTTS'
 XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]' 
 XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]' # Useless
@@ -44,19 +45,19 @@ XPATH_BTTS_YES_NO = '//span[@class="gl-Participant_Name"]'
 XPATH_BTTS_MATCH = '//span[starts-with(@class,"cl-EnhancedDropDown ")]'
 XPATH_BTTS_DATE = '//div[starts-with(@class,"cm-MarketGroupExtraData_TimeStamp ")]'
 XPATH_CLOCK = '//div[@class="pi-CouponParticipantClockInPlay_GameTimerWrapper "]'
-#OVER 2.5:
+# OVER 2.5:
 OVER25_STRING = 'OVER 2,5'
 XPATH_OVER25_CONTAINER = '//span[contains(., "Goals Over/Under")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_OVER25_SECTION = '//div[starts-with(@class,"gl-MarketValuesExplicit2 gl-Market_General gl-Market_PWidth-37-5 ")]'
 XPATH_OVER25_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER25_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
-#OVER 0.5 HT:
+# OVER 0.5 HT:
 OVER05_HT_STRING = 'OVER 0.5 HT'
 XPATH_OVER05_HT_CLICK_SECTION = '//div[@class="cl-MarketGroupNavBarButton " and contains(.,"Half")]'
 XPATH_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_OVER05_HT_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER05_HT_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
-#LIVE MATCHES:
+# LIVE MATCHES:
 XPATH_LIVE_BUTTON = '//div[@class="sl-LiveInPlayHeader_LiveLabel "]'
 XPATH_LIVE_GENERAL = '//div[starts-with(@class,"ip-ControlBar_BBarItem ") and contains(.,"Overview")]'
 XPATH_LIVE_LEAGUE = '//div[@class="ipo-Competition ipo-Competition-open "]'
@@ -213,7 +214,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     #Insert your ID below. 
     #AIMA_ID = '700187299' <- for AIMA_Services 
-    bot_chatID = AIMA_ID  
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -791,6 +792,23 @@ def scroll_down(browser, times):
 
     return
 
+def save_in_file(file_name, object):
+    # open the file for writing
+    fileObject = open(file_name, 'wb')
+
+    # this writes the object 'object' to the
+    # file named 'testfile'
+    pickle.dump(object, fileObject)
+
+    # here we close the fileObject
+    fileObject.close()
+
+def load_from_file(file_name, object):
+    # we open the file for reading
+    fileObject = open(file_name, 'r')
+    # load the object from the file into var b
+    object = pickle.load(fileObject)
+
 def test():
 
     url = 'https://www.bet365.es/'
@@ -802,16 +820,6 @@ def test():
 
 def main2():
 
-    url = 'https://www.bet365.com/'
-    browser = open_website(url)
-    print('Website opened')
-    click_español(browser)
-    click_futbol_section(browser)
-    click_live_button(browser)
-
-
-    get_live_leagues(browser)
-
     return
 
 def main():
@@ -821,25 +829,35 @@ def main():
     print('clicked "English"')
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
-    before = ''
+
     match_dict = {}
-    now = datetime.now()
-    tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 50, 0)
+    file_name = 'matchesFile.txt'
+    dict_updated = False
+    tomorrow = date.today() #+ timedelta(days=1)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 0, 0)
     while True:
         print('Clicking home button')
         now = datetime.now()
         click_home_button(browser)
         try:
-            if now >= tomorrow_0h: 
+            if now >= tomorrow_0h:
+                dict_updated = False
                 print('pregames')
                 click_futbol_section(browser)
                 print("clicked futbol section")
+                # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
-                # Updating dates: 
+                # Saving match_dict in a file:
+                dict_updated = True
+                save_in_file(file_name,match_dict)
+                dict_updated = True
+                # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+
+            if dict_updated:
+                load_from_file(file_name,match_dict)
 
             if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
@@ -847,10 +865,10 @@ def main():
 
             print('live')
             click_futbol_section(browser)
-            click_live_button(browser) 
-
-            #TODO: Check matches in dictionary
+            click_live_button(browser)
             get_live_leagues(browser)
+
+
 
         except Exception as e:
             print(str(e))
