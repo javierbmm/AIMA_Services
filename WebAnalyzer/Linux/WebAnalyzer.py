@@ -882,6 +882,10 @@ def main():
         sleep(5*60)
 
     #end while
+
+    warn_msg = "WARNING: Something happened. Please, check the bot"
+    print(warn_msg)
+    bot_send_msg(warn_msg)
     return
 
 def test_bot():
