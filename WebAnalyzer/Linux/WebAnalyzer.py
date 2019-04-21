@@ -370,7 +370,7 @@ def get_leagues(browser):
         browser.back()
         click_futbol_section(browser)
         counter += 1
-
+        break
     # End while
         
     browser.quit()
