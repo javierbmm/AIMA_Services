@@ -841,7 +841,7 @@ def main():
     tomorrow = date.today() #+ timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 0, 0)
     while True:
-        print('Clicking home button')
+        print('Clicking soccer button')
         now = datetime.now()
         click_futbol_section(browser)
         try:
@@ -874,9 +874,6 @@ def main():
             click_futbol_section(browser)
             click_live_button(browser)
             get_live_leagues(browser)
-
-
-
         except:
             continue
         #end try-except
