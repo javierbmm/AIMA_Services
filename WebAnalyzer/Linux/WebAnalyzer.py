@@ -845,8 +845,6 @@ def main():
         now = datetime.now()
         click_futbol_section(browser)
         try:
-
-
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
@@ -863,22 +861,22 @@ def main():
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
-            if dict_updated:
+            elif dict_updated:
                 load_from_file(file_name, match_dict)
 
-            if not match_dict: #Checking if the dictionary is empty
+            elif not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
-
-            print('live')
-            click_futbol_section(browser)
-            click_live_button(browser)
-            get_live_leagues(browser)
+            else:
+                print('live')
+                click_futbol_section(browser)
+                click_live_button(browser)
+                get_live_leagues(browser)
         except:
             continue
         #end try-except
         sleep(5*60)
-
+        print("ending while")
     #end while
 
     warn_msg = "WARNING: Something happened. Please, check the bot"
