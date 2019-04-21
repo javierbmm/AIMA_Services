@@ -846,6 +846,7 @@ def main():
         #click_futbol_section(browser)
         print('clicked it')
         try:
+            print('trycatchcode')
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
