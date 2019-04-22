@@ -338,7 +338,6 @@ def click_proximas24hrs(browser):
 def get_leagues(browser):
     click_futbol_section(browser)
     click_proximas24hrs(browser)
-    browser.save_screenshot("screenshot3.png")
 
     match_dict = {}
     # Searching by LEAGUES:
@@ -386,7 +385,6 @@ def get_leagues(browser):
         click_futbol_section(browser)
         counter += 1
         # End while
-        break
 
     return match_dict
 
@@ -459,7 +457,6 @@ def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
     sleep(delay[randint(0, 4)])  # Time in seconds.
     browser.find_element_by_xpath(XPATH_OVER05_HT_CLICK_SECTION).click()
     print('clicked')
-    browser.save_screenshot("screenshot4.png")
 
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
@@ -775,7 +772,6 @@ def get_matches(browser, league):
         try:
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-            browser.save_screenshot("screenshot3.png")
 
         except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
