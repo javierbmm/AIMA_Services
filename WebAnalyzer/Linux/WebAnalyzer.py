@@ -849,21 +849,21 @@ def main():
         print(now>tomorrow_0h)
         try:
             print('trycatchcode')
-            if not now >= tomorrow_0h:
-                dict_updated = False
-                delete_file_content(file_name)
-                print('pregames')
-                print("clicked futbol section")
-                # Updating match_dict
-                match_dict.clear()
-                match_dict.update(get_leagues(browser))
-                # Saving match_dict in a file:
-                dict_updated = True
-                save_in_file(file_name,match_dict)
-                dict_updated = True
-                # Updating tomorrows date:
-                tomorrow = date.today() + timedelta(days=1)
-                tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+        # not now >= tomorrow_0h:
+            dict_updated = False
+            delete_file_content(file_name)
+            print('pregames')
+            print("clicked futbol section")
+            # Updating match_dict
+            match_dict.clear()
+            match_dict.update(get_leagues(browser))
+            # Saving match_dict in a file:
+            dict_updated = True
+            save_in_file(file_name,match_dict)
+            dict_updated = True
+            # Updating tomorrows date:
+            tomorrow = date.today() + timedelta(days=1)
+            tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
             if dict_updated:
                 load_from_file(file_name, match_dict)
