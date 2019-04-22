@@ -812,9 +812,9 @@ def load_from_file(file_name, object):
     object = pickle.load(fileObject)
 
 def delete_file_content(fName):
-    with open(fName, "w"):
-        pass
-
+    fileObject = open(fName, 'w')
+    fileObject.close()
+    
     return
 
 def test():
