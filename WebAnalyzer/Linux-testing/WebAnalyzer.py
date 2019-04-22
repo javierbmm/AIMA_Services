@@ -374,8 +374,6 @@ def get_leagues(browser):
         counter += 1
     # End while
         break
-        
-    browser.quit()
 
     return match_dict
 
@@ -667,7 +665,6 @@ def get_live_leagues(browser, match_dict):
 
     # End while
         
-    browser.quit()
 
     return 
     
