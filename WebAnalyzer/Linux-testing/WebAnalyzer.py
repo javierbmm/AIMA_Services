@@ -238,7 +238,8 @@ def open_website(url):
 
     #browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome('/usr/bin/chromedriver',options=options)
+    global browser
+    browser = webdriver.Chrome('/usr/bin/chromedriver',options=options)
 
     browser.get(url)
     wait = WebDriverWait(browser, 6000) 
@@ -623,9 +624,7 @@ def extract_live_matches_information(browser,match_dict):
         i+=1
     #end for
 
-    #TODO: Extract corners information
     corners = ''
-    #TODO: Add rest of attributes. 
     match = live_match_info(name,min,e1_ataques,e1_a_peligrosos,e1_tiros_puerta,e1_corners,e1_posesion,
                  e2_ataques,e2_a_peligrosos,e2_tiros_puerta,e2_corners,e2_posesion,fee,option)
 
@@ -838,7 +837,7 @@ def main():
     file_name = "./matchesFile.txt"
     dict_updated = True
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         sleep(30) # 30 secs
