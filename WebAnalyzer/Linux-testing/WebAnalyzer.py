@@ -801,11 +801,13 @@ def save_in_file(file_name, object):
     # here we close the fileObject
     fileObject.close()
 
-def load_from_file(file_name, object):
+def load_from_file(file_name):
     # we open the file for reading
     fileObject = open(file_name, 'rb')
     # load the object from the file into var b
     object = pickle.load(fileObject)
+
+    return object
 
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
@@ -847,7 +849,7 @@ def main():
             print('Clicking soccer button')
             now = datetime.now()
             click_futbol_section(browser)
-            print(now > tomorrow_0h)
+            print(now >= tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
@@ -862,10 +864,10 @@ def main():
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-
+            print("im here")
             if dict_updated == True:
                 print("loading file")
-                load_from_file(file_name, match_dict)
+                match_dict = load_from_file(file_name)
 
             if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
