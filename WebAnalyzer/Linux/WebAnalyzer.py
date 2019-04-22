@@ -4,31 +4,30 @@ import requests
 import pickle
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait 
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import selenium.common.exceptions
-from selenium.common.exceptions import NoSuchElementException   
-from selenium.common.exceptions import ElementNotSelectableException  
-from selenium.common.exceptions import StaleElementReferenceException  
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotSelectableException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import ElementNotVisibleException
-from selenium.webdriver.common.keys import Keys 
-from selenium.webdriver.common.by import By 
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from datetime import datetime, time, timedelta, date
 import urllib3.exceptions
 from time import sleep
 from random import randint
 
-
-delay = [1,2,1.5,2,2.3]
+delay = [1, 2, 1.5, 2, 2.3]
 LINE = "\n--------------------------------------------\n"
 # Users ID's:
-AIMA_ID = '846646570'   # AIMA_Services
-JAVIER_ID = '394580187' # Javier Merida
+AIMA_ID = '846646570'  # AIMA_Services
+JAVIER_ID = '394580187'  # Javier Merida
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
-XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
+XPATH_MATCH = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
 XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-CouponParticipantIPPGBase "]'
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
@@ -38,8 +37,8 @@ XPATH_ODDS_DROPDOWN = "//a[@class='hm-DropDownSelections_Button hm-DropDownSelec
 XPATH_ODDS_DECIMAL = "//a[starts-with(@class,'hm-DropDownSelections_Item ') and contains(.,'Decimal')]"
 # BTTS:
 BTTS_STRING = 'BTTS'
-XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]' 
-XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]' # Useless
+XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]'
+XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]'  # Useless
 XPATH_BTTS_OPTION = '//div[@class="gl-Participant gl-Participant_General gl-Market_CN-2 "]'
 XPATH_BTTS_FEE = '//span[@class="gl-Participant_Odds"]'
 XPATH_BTTS_YES_NO = '//span[@class="gl-Participant_Name"]'
@@ -64,7 +63,7 @@ XPATH_LIVE_GENERAL = '//div[starts-with(@class,"ip-ControlBar_BBarItem ") and co
 XPATH_LIVE_LEAGUE = '//div[@class="ipo-Competition ipo-Competition-open "]'
 XPATH_LIVE_LEAGUE_NAME = '//div[@class="ipo-CompetitionButton_NameLabel ipo-CompetitionButton_NameLabelHasMarketHeading "]'
 XPATH_LIVE_MATCH = '//div[@class="ipo-ScoreDisplayStandard_Wrapper "]'
-XPATH_LIVE_MATCH_CLICK = '//div[@class="sl-CouponParticipantWithBookCloses_NameContainer "]' #useless
+XPATH_LIVE_MATCH_CLICK = '//div[@class="sl-CouponParticipantWithBookCloses_NameContainer "]'  # useless
 XPATH_LIVE_NAME = '//div[starts-with(@class,"ipe-GridHeader_FixtureCell ")]'
 XPATH_LIVE_MIN = '//div[@class="ipe-SoccerHeaderLayout_ExtraData "]'
 XPATH_LIVE_ATAQUES = '//div[@class="ml1-StatsCharts_Column ml1-StatsCharts_Column-left "]'
@@ -81,146 +80,154 @@ XPATH_LIVE_CORNERS = '//div[@class="ipe-SoccerGridColumn ipe-SoccerGridColumn_IC
 XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 
 
-
 class live_match_info:
     # Constructor
-    def __init__(self,match_name_,min_,e1_ataques_,e1_ataques_peligrosos_,e1_tiros_puerta_,e1_corners_,e1_posesion_,
-                 e2_ataques_,e2_ataques_peligrosos_,e2_tiros_puerta_,e2_corners_,e2_posesion_,fee_,option_):
-        self.match_name     = match_name_
-        self.min            = min_
-        self.fee            = fee_
-        self.option         = option_
+    def __init__(self, match_name_, min_, e1_ataques_, e1_ataques_peligrosos_, e1_tiros_puerta_, e1_corners_,
+                 e1_posesion_,
+                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_):
+        self.match_name = match_name_
+        self.min = min_
+        self.fee = fee_
+        self.option = option_
 
-        #Equipo 1:
-        self.e1_ataques        = e1_ataques_
-        self.e1_a_peligrosos   = e1_ataques_peligrosos_
-        self.e1_tiros_puerta   = e1_tiros_puerta_
-        self.e1_corners        = e1_corners_
-        self.e1_posesion       = e1_posesion_
-        #Equipo 2:
-        self.e2_ataques        = e2_ataques_
-        self.e2_a_peligrosos   = e2_ataques_peligrosos_
-        self.e2_tiros_puerta   = e2_tiros_puerta_
-        self.e2_corners        = e2_corners_
-        self.e2_posesion       = e2_posesion_
-        
+        # Equipo 1:
+        self.e1_ataques = e1_ataques_
+        self.e1_a_peligrosos = e1_ataques_peligrosos_
+        self.e1_tiros_puerta = e1_tiros_puerta_
+        self.e1_corners = e1_corners_
+        self.e1_posesion = e1_posesion_
+        # Equipo 2:
+        self.e2_ataques = e2_ataques_
+        self.e2_a_peligrosos = e2_ataques_peligrosos_
+        self.e2_tiros_puerta = e2_tiros_puerta_
+        self.e2_corners = e2_corners_
+        self.e2_posesion = e2_posesion_
+
         return
 
-    def get_name(self): 
+    def get_name(self):
         name = str(self.match_name)
         return name
 
     def to_string(self):
-        string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
-        string += '\n***--'+str(self.option)+':*** '+str(self.fee)
-        string += '\n***--Ataques:*** ' + str(self.e1_ataques) +'|'+str(self.e2_ataques)
-        string += '\n***--Ataques peligrosos:*** '+ str(self.e1_a_peligrosos) +'|'+str(self.e2_a_peligrosos)
-        string += '\n***--Tiros a puerta:*** '+ str(self.e1_tiros_puerta) +'|'+str(self.e2_tiros_puerta)
-        string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
+        string = '\n***MATCH(Equipo1 vs Equipo2): ' + str(self.match_name) + '***\n***-MIN:*** ' + self.min
+        string += '\n***--' + str(self.option) + ':*** ' + str(self.fee)
+        string += '\n***--Ataques:*** ' + str(self.e1_ataques) + '|' + str(self.e2_ataques)
+        string += '\n***--Ataques peligrosos:*** ' + str(self.e1_a_peligrosos) + '|' + str(self.e2_a_peligrosos)
+        string += '\n***--Tiros a puerta:*** ' + str(self.e1_tiros_puerta) + '|' + str(self.e2_tiros_puerta)
+        string += '\n***--Posesion:*** ' + str(self.e1_posesion) + '|' + str(self.e2_posesion)
 
         return string
 
     def __str__(self):
-        string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
-        string += '\n***--'+str(self.option)+':*** '+str(self.fee)
-        string += '\n***--Ataques:*** ' + str(self.e1_ataques) +'|'+str(self.e2_ataques)
-        string += '\n***--Ataques peligrosos:*** '+ str(self.e1_a_peligrosos) +'|'+str(self.e2_a_peligrosos)
-        string += '\n***--Tiros a puerta:*** '+ str(self.e1_tiros_puerta) +'|'+str(self.e2_tiros_puerta)
-        string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
+        string = '\n***MATCH(Equipo1 vs Equipo2): ' + str(self.match_name) + '***\n***-MIN:*** ' + self.min
+        string += '\n***--' + str(self.option) + ':*** ' + str(self.fee)
+        string += '\n***--Ataques:*** ' + str(self.e1_ataques) + '|' + str(self.e2_ataques)
+        string += '\n***--Ataques peligrosos:*** ' + str(self.e1_a_peligrosos) + '|' + str(self.e2_a_peligrosos)
+        string += '\n***--Tiros a puerta:*** ' + str(self.e1_tiros_puerta) + '|' + str(self.e2_tiros_puerta)
+        string += '\n***--Posesion:*** ' + str(self.e1_posesion) + '|' + str(self.e2_posesion)
 
         return string
-
 
 
 class match_info:
     # Constructor
-    def __init__(self,match_name_,date_,btts_,over25_,over05ht_):
+    def __init__(self, match_name_, date_, btts_, over25_, over05ht_):
         # Variables initialization
-        self.match_name         = match_name_
-        self.date               = date_
-        self.btts_amount        = btts_
-        self.over25_amount      = over25_
-        self.over05_ht_amount   = over05ht_
+        self.match_name = match_name_
+        self.date = date_
+        self.btts_amount = btts_
+        self.over25_amount = over25_
+        self.over05_ht_amount = over05ht_
 
-    def get_name(self): 
+    def get_name(self):
         name = str(self.match_name)
         return name
 
     def to_string(self):
-        string = '\n***MATCH: '+str(self.match_name)
-        string +='***\n***-Date:*** '+str(self.date)
-        string +='\n***--BTTS:*** '+str(self.btts_amount)+'\n***--OVER 2.5:*** '+str(self.over25_amount)
-        string +='\n***--OVER 0.5 HT:*** '+str(self.over05_ht_amount)
+        string = '\n***MATCH: ' + str(self.match_name)
+        string += '***\n***-Date:*** ' + str(self.date)
+        string += '\n***--BTTS:*** ' + str(self.btts_amount) + '\n***--OVER 2.5:*** ' + str(self.over25_amount)
+        string += '\n***--OVER 0.5 HT:*** ' + str(self.over05_ht_amount)
 
         return string
 
-#Not used classes:
+
+# Not used classes:
 class BTTS:
     # Constructor
-    def __init__(self,match_name_,date_,option_,fee_):
+    def __init__(self, match_name_, date_, option_, fee_):
         # Variables initialization
         self.match_name = match_name_
-        self.date       = date_
-        self.option     = option_
-        self.fee        = fee_
-        self.type       = 'BTTS'
+        self.date = date_
+        self.option = option_
+        self.fee = fee_
+        self.type = 'BTTS'
 
     def to_string(self):
-        string = '\n***MATCH: '+str(self.match_name)+'***\n***TYPE: '+self.type
-        string =+'***\n***-Date:*** '+str(self.date)+'\n***-Option:*** '+str(self.option)+'\n***-Amount:*** '+str(self.fee)
+        string = '\n***MATCH: ' + str(self.match_name) + '***\n***TYPE: ' + self.type
+        string = +'***\n***-Date:*** ' + str(self.date) + '\n***-Option:*** ' + str(
+            self.option) + '\n***-Amount:*** ' + str(self.fee)
         return string
+
+
 class OVER_2_5:
     # Constructor
-    def __init__(self,match_name_,date_,option_,fee_):
+    def __init__(self, match_name_, date_, option_, fee_):
         # Variables initialization
         self.match_name = match_name_
-        self.date       = date_
-        self.option     = option_
-        self.fee        = fee_
-        self.type       = 'OVER 2,5'
+        self.date = date_
+        self.option = option_
+        self.fee = fee_
+        self.type = 'OVER 2,5'
 
     def to_string(self):
-        string = '\n***MATCH: '+str(self.match_name)+'***\n***TYPE: '+self.type
-        string =+'***\n***-Date:*** '+str(self.date)+'\n***-Option:*** '+str(self.option)+'\n***-Amount:*** '+str(self.fee)
+        string = '\n***MATCH: ' + str(self.match_name) + '***\n***TYPE: ' + self.type
+        string = +'***\n***-Date:*** ' + str(self.date) + '\n***-Option:*** ' + str(
+            self.option) + '\n***-Amount:*** ' + str(self.fee)
         return string
+
+
 ##################
 
-def add_match_list_to_dictionary(match_list_,dict_):
+def add_match_list_to_dictionary(match_list_, dict_):
     for item in match_list_:
         dict_[item.get_name()] = item
 
     return
+
 
 def send_msg_by_groups(bot_message):
     counter = 0
     msg = ''
 
     for x in bot_message:
-        print('info: '+x+LINE)
+        print('info: ' + x + LINE)
         msg += x
-        if(counter >=10):
+        if (counter >= 10):
             bot_send_msg(msg)
             msg = ''
             counter = 0
         # end if
-        counter+=1
+        counter += 1
     # end for
     print('Sending information')
     bot_send_msg(msg)
 
     return
 
+
 def bot_send_msg(msg):
-    #Bot token for AIMA_futBot:     
+    # Bot token for AIMA_futBot:
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
-    #Insert your ID below. 
-    #AIMA_ID = '700187299' <- for AIMA_Services 
+    # Insert your ID below.
+    # AIMA_ID = '700187299' <- for AIMA_Services
     bot_chatID = AIMA_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
     print(send_text)
-    
+
     return response.json()
 
 
@@ -237,100 +244,108 @@ def bot_send_msg_to(msg, user_id):
 
     return response.json()
 
-def open_website(url):
 
+def open_website(url):
     # url                 = 'https://www.bet365.es'
-    options             = Options()
-    options.headless    = True
+    options = Options()
+    options.headless = True
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
-    options.add_argument('user-agent='+user_agent)
+    options.add_argument('user-agent=' + user_agent)
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
     options.add_experimental_option("detach", True)
-    #options.add_argument("--disable-gpu")
+    # options.add_argument("--disable-gpu")
 
-    #browser = webdriver.Chrome(ChromeDriverManager().install())
+    # browser = webdriver.Chrome(ChromeDriverManager().install())
     # TODO: Catch exception when unable to open website
-    browser             = webdriver.Chrome('/usr/bin/chromedriver',options=options)
+    global browser
+    browser = webdriver.Chrome('/usr/bin/chromedriver', options=options)
 
     browser.get(url)
-    wait = WebDriverWait(browser, 6000) 
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    wait = WebDriverWait(browser, 6000)
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return browser
 
+
 def click_español(browser):
-    #Navigation:
-    sleep(delay[randint(0,4)]) # Time in seconds.
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    # Navigation:
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     español = browser.find_element_by_link_text("English")
     español.send_keys(Keys.ENTER)
-    sleep(delay[randint(0,4)]) # Time in seconds.
-  
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+
     return
+
 
 def click_futbol_section(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL)))
 
     futbol_section = browser.find_element_by_xpath(XPATH_ESPAÑOL)
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     futbol_section.click()
-    
-    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
+
 
 def click_home_button(browser):
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_HOME_BUTTON)))
     live_section = browser.find_element_by_xpath(XPATH_HOME_BUTTON)
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     live_section.click()
-    
-    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
+
 
 def set_decimal_odds(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_ODDS_DROPDOWN))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_ODDS_DROPDOWN)))
     drop_down = browser.find_element_by_xpath(XPATH_ODDS_DROPDOWN)
     drop_down.click()
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     browser.find_element_by_xpath(XPATH_ODDS_DECIMAL).click()
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
-    
+
+
 def click_live_button(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON)))
     live_section = browser.find_element_by_xpath(XPATH_LIVE_BUTTON)
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     live_section.click()
-    
-    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
+
 
 def click_live_general(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_GENERAL))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_GENERAL)))
     live_section = browser.find_element_by_xpath(XPATH_LIVE_GENERAL)
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     live_section.click()
-    
-    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
 
+
 def click_proximas24hrs(browser):
-    WebDriverWait(browser,100).until(EC.presence_of_element_located((By.XPATH, XPATH_24HRS_BUTTON))) 
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_24HRS_BUTTON)))
     live_section = browser.find_element_by_xpath(XPATH_24HRS_BUTTON)
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     live_section.click()
-    
-    sleep(delay[randint(0,4)]) # Time in seconds.
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
 
@@ -385,6 +400,7 @@ def get_leagues(browser):
         click_futbol_section(browser)
         counter += 1
         # End while
+        break
 
     return match_dict
 
@@ -644,9 +660,7 @@ def extract_live_matches_information(browser, match_dict):
         i += 1
     # end for
 
-    # TODO: Extract corners information
     corners = ''
-    # TODO: Add rest of attributes.
     match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
                             e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
@@ -863,20 +877,20 @@ def main():
     number_of_errors = 0
     match_dict = {}
     file_name = "./matchesFile.txt"
-    dict_updated = False
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+
     while True:
         sleep(30)  # 30 secs
         try:
             print('Clicking soccer button')
             now = datetime.now()
-            click_futbol_section(browser)
+            click_home_button(browser)
             print(now >= tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
-                print('Pregames')
+                print('pregames')
                 # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
@@ -887,14 +901,15 @@ def main():
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+            print("im here")
             if dict_updated == True:
-                print("Loading file")
+                print("loading file")
                 match_dict = load_from_file(file_name)
 
             if not match_dict:  # Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
-            print('Live matches')
+            print('live')
             click_futbol_section(browser)
             click_live_button(browser)
             get_live_leagues(browser, match_dict)
@@ -903,9 +918,9 @@ def main():
             number_of_errors += 1
             continue
         finally:
-            if number_of_errors > 5:
+            if number_of_errors > 2:
                 bot_send_msg_to("something happened D:", JAVIER_ID)
-                #browser.save_screenshot("error_screenshot.png")
+                browser.save_screenshot("error_screenshot.png")
                 number_of_errors = 0
 
         # end try-except
@@ -917,7 +932,6 @@ def main():
     warn_msg = "WARNING: Something happened. Please, check the bot"
     print(warn_msg)
     bot_send_msg(warn_msg)
-
     return
 
 

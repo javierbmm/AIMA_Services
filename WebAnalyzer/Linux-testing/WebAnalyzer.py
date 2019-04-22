@@ -223,6 +223,21 @@ def bot_send_msg(msg):
 
     return response.json()
 
+
+def bot_send_msg_to(msg, user_id):
+    # Bot token for AIMA_futBot:
+    bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
+    # Insert your ID below.
+    # AIMA_ID = '700187299' <- for AIMA_Services
+    bot_chatID = user_id
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
+    response = requests.get(send_text)
+
+    print(send_text)
+
+    return response.json()
+
+
 def open_website(url):
 
     # url                 = 'https://www.bet365.es'
@@ -835,9 +850,8 @@ def main():
     number_of_errors = 0
     match_dict = {}
     file_name = "./matchesFile.txt"
-    dict_updated = True
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         sleep(30) # 30 secs
@@ -878,7 +892,7 @@ def main():
             continue
         finally:
             if number_of_errors > 2:
-                bot_send_msg("something happened D:")
+                bot_send_msg_to("something happened D:", JAVIER_ID)
                 browser.save_screenshot("error_screenshot.png")
                 number_of_errors = 0
 
