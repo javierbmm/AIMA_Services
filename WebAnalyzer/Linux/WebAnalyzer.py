@@ -30,7 +30,6 @@ XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
 XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
 XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-CouponParticipantIPPGBase "]'
-XPATH_LIVE_MATCH = '//div[contains(@class,"sl-CouponParticipantWithBookCloses_ClockPaddingLeft")]'
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
 XPATH_ESPAÑOL = '//div[contains(text(), "Soccer")]'
@@ -248,6 +247,7 @@ def open_website(url):
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
+    options.add_experimental_option("detach", True)
     #options.add_argument("--disable-gpu")
 
     #browser = webdriver.Chrome(ChromeDriverManager().install())
@@ -909,7 +909,7 @@ def main():
         finally:
             if number_of_errors > 5:
                 bot_send_msg_to("something happened D:", JAVIER_ID)
-                browser.save_screenshot("error_screenshot.png")
+                #browser.save_screenshot("error_screenshot.png")
                 number_of_errors = 0
 
         # end try-except
@@ -921,6 +921,7 @@ def main():
     warn_msg = "WARNING: Something happened. Please, check the bot"
     print(warn_msg)
     bot_send_msg(warn_msg)
+
     return
 
 
