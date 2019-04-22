@@ -814,7 +814,7 @@ def load_from_file(file_name, object):
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
     fileObject.close()
-
+    print('delete')
     return
 
 def test():
