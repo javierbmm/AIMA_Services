@@ -834,12 +834,15 @@ def main():
     print('clicked "English"')
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
-
+    number_of_errors = 0
     match_dict = {}
     file_name = "./matchesFile.txt"
     dict_updated = False
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    click_futbol_section(browser)
+    click_live_button(browser)
+    browser.save_screenshot("error_screenshot.png")
     while True:
         sleep(30) # 30 secs
         try:
@@ -874,7 +877,14 @@ def main():
             get_live_leagues(browser)
         except Exception:
             print(traceback.print_exc())
+            number_of_errors+=1
             continue
+        finally:
+            if number_of_errors > 5:
+                bot_send_msg("something happened D:")
+                browser.save_screenshot("error_screenshot.png")
+                number_of_errors = 0
+
         #end try-except
         print("ending while")
         sleep(5*60)
