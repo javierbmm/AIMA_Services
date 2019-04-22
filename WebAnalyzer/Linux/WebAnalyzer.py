@@ -844,7 +844,8 @@ def main():
         print('Clicking soccer button')
         now = datetime.now()
         click_futbol_section(browser)
-        print('clicked it')
+        print(now.strftime("%Y-%m-%d %H:%M:%S"))
+        print(tomorrow_0h.strftime("%Y-%m-%d %H:%M:%S"))
         try:
             print('trycatchcode')
             if now >= tomorrow_0h:
