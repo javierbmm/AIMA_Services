@@ -846,6 +846,7 @@ def main():
         click_futbol_section(browser)
         print(now.strftime("%Y-%m-%d %H:%M:%S"))
         print(tomorrow_0h.strftime("%Y-%m-%d %H:%M:%S"))
+        print(now>tomorrow_0h)
         try:
             print('trycatchcode')
             if now >= tomorrow_0h:
