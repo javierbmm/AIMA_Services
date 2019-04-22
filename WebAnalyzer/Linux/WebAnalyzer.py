@@ -813,8 +813,9 @@ def load_from_file(file_name, object):
 
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
-    fileObject.close()
     print('delete')
+
+    fileObject.close()
     return
 
 def test():
@@ -839,7 +840,7 @@ def main():
     set_decimal_odds(browser)
 
     match_dict = {}
-    file_name = './matchesFile.txt'
+    file_name = "./matchesFile.txt"
     dict_updated = False
     tomorrow = date.today() #+ timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
