@@ -814,7 +814,7 @@ def load_from_file(file_name, object):
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
     fileObject.close()
-    
+
     return
 
 def test():
@@ -853,6 +853,7 @@ def main():
         try:
             print('trycatchcode')
             if now >= tomorrow_0h:
+                print('if statement')
                 dict_updated = False
                 delete_file_content(file_name)
                 print('pregames')
