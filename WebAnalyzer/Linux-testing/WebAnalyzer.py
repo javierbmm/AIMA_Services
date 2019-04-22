@@ -837,12 +837,10 @@ def main():
     number_of_errors = 0
     match_dict = {}
     file_name = "./matchesFile.txt"
-    dict_updated = False
+    dict_updated = True
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-    click_futbol_section(browser)
-    click_live_button(browser)
-    browser.save_screenshot("error_screenshot.png")
+    
     while True:
         sleep(30) # 30 secs
         try:
