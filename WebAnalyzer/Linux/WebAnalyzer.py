@@ -23,7 +23,7 @@ from random import randint
 delay = [1,2,1.5,2,2.3]
 LINE = "\n--------------------------------------------\n"
 # Users ID's:
-AIMA_ID = '700187299'   # AIMA_Services
+AIMA_ID = '846646570'   # AIMA_Services
 JAVIER_ID = '394580187' # Javier Merida
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
