@@ -844,11 +844,11 @@ def main():
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
-        print('Clicking soccer button')
-        now = datetime.now()
-        click_futbol_section(browser)
-        print(now>tomorrow_0h)
         try:
+            print('Clicking soccer button')
+            now = datetime.now()
+            click_futbol_section(browser)
+            print(now > tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
