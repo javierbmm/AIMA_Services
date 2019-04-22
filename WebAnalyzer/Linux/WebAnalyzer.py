@@ -863,10 +863,10 @@ def main():
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
-            elif dict_updated:
+            if dict_updated:
                 load_from_file(file_name, match_dict)
 
-            elif not match_dict: #Checking if the dictionary is empty
+            if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
             else:
