@@ -220,7 +220,7 @@ def bot_send_msg(msg):
     response = requests.get(send_text)
 
     print(send_text)
-    
+
     return response.json()
 
 def open_website(url):
