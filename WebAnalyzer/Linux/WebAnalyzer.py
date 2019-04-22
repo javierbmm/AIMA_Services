@@ -919,7 +919,7 @@ def main():
             continue
         finally:
             if number_of_errors > 2:
-                bot_send_msg_to("something happened D:", JAVIER_ID)
+                bot_send_msg_to("FROM: AIMA_Services\n->Something happened.", JAVIER_ID)
                 browser.save_screenshot("error_screenshot.png")
                 number_of_errors = 0
 
