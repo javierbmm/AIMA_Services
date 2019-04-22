@@ -216,7 +216,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     #Insert your ID below. 
     #AIMA_ID = '700187299' <- for AIMA_Services 
-    bot_chatID = JAVIER_ID
+    bot_chatID = AIMA_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -813,9 +813,8 @@ def load_from_file(file_name, object):
 
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
-    print('delete')
-
     fileObject.close()
+
     return
 
 def test():
@@ -843,8 +842,8 @@ def main():
     match_dict = {}
     file_name = "./matchesFile.txt"
     dict_updated = False
-    tomorrow = date.today() #+ timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow = date.today() + timedelta(days=1)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
         print('Clicking soccer button')
         now = datetime.now()
@@ -853,11 +852,8 @@ def main():
         try:
             if now >= tomorrow_0h:
                 dict_updated = False
-                print('if statement')
-
                 delete_file_content(file_name)
                 print('pregames')
-                print("clicked futbol section")
                 # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
