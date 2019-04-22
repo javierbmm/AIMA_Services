@@ -846,7 +846,7 @@ def main():
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
-        sleep(5*60) # five minutes
+        sleep(30) # 30 secs
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -882,6 +882,8 @@ def main():
             continue
         #end try-except
         print("ending while")
+        sleep(5*60)
+
     #end while
 
     warn_msg = "WARNING: Something happened. Please, check the bot"
