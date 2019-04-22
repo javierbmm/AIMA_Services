@@ -853,8 +853,9 @@ def main():
         try:
             print('trycatchcode')
             if now >= tomorrow_0h:
-                print('if statement')
                 dict_updated = False
+                print('if statement')
+
                 delete_file_content(file_name)
                 print('pregames')
                 print("clicked futbol section")
