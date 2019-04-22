@@ -839,11 +839,11 @@ def main():
     file_name = 'matchesFile.txt'
     dict_updated = False
     tomorrow = date.today() #+ timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 22, 0, 0)
+    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
         print('Clicking soccer button')
         now = datetime.now()
-        #click_futbol_section(browser)
+        click_futbol_section(browser)
         print('clicked it')
         try:
             print('trycatchcode')
