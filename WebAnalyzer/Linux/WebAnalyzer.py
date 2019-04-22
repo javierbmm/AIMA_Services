@@ -832,6 +832,7 @@ def main2():
     return
 
 def main():
+    import traceback
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     click_español(browser)
@@ -878,7 +879,8 @@ def main():
             click_futbol_section(browser)
             click_live_button(browser)
             get_live_leagues(browser)
-        except:
+        except Exception:
+            print(traceback.print_exc())
             continue
         #end try-except
         sleep(5*60)
