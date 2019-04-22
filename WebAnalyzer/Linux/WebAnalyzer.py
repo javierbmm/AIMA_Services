@@ -806,7 +806,7 @@ def save_in_file(file_name, object):
 
 def load_from_file(file_name, object):
     # we open the file for reading
-    fileObject = open(file_name, 'r')
+    fileObject = open(file_name, 'rb')
     # load the object from the file into var b
     object = pickle.load(fileObject)
 
