@@ -846,6 +846,7 @@ def main():
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
+        sleep(5*60) # five minutes
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -880,7 +881,6 @@ def main():
             print(traceback.print_exc())
             continue
         #end try-except
-        sleep(5*60)
         print("ending while")
     #end while
 
