@@ -771,8 +771,7 @@ def get_matches(browser, league):
         sleep(delay[randint(0,4)]) # Time in seconds.
         browser.back()
     # End while
-        if counter >= 2: break
- 
+
     messages = []
     messages.append(league)
     for match in matches_information: messages.append(match.to_string())
