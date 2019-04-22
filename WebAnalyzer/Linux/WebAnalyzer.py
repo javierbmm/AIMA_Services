@@ -839,7 +839,7 @@ def main():
     set_decimal_odds(browser)
 
     match_dict = {}
-    file_name = 'matchesFile.txt'
+    file_name = './matchesFile.txt'
     dict_updated = False
     tomorrow = date.today() #+ timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
@@ -847,11 +847,8 @@ def main():
         print('Clicking soccer button')
         now = datetime.now()
         click_futbol_section(browser)
-        print(now.strftime("%Y-%m-%d %H:%M:%S"))
-        print(tomorrow_0h.strftime("%Y-%m-%d %H:%M:%S"))
         print(now>tomorrow_0h)
         try:
-            print('trycatchcode')
             if now >= tomorrow_0h:
                 dict_updated = False
                 print('if statement')
