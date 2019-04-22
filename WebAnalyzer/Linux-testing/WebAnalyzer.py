@@ -327,10 +327,9 @@ def get_leagues(browser):
 
     match_dict = {}
     #Searching by LEAGUES: 
-    try:
-        WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
-    except:
-        return match_dict
+
+    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
+
 
     LEAGUES = browser.find_elements_by_xpath(XPATH_LEAGUE)
     
