@@ -840,7 +840,7 @@ def main():
     dict_updated = True
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-    
+
     while True:
         sleep(30) # 30 secs
         try:
@@ -863,7 +863,8 @@ def main():
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
-            if dict_updated:
+            if dict_updated == True:
+                print("loading file")
                 load_from_file(file_name, match_dict)
 
             if not match_dict: #Checking if the dictionary is empty
