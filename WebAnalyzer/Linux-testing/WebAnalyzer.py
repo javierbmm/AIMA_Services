@@ -875,7 +875,7 @@ def main():
             print('live')
             click_futbol_section(browser)
             click_live_button(browser)
-            get_live_leagues(browser)
+            get_live_leagues(browser, match_dict)
         except Exception:
             print(traceback.print_exc())
             number_of_errors+=1
