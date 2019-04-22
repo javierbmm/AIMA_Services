@@ -224,6 +224,20 @@ def bot_send_msg(msg):
     
     return response.json()
 
+
+def bot_send_msg_to(msg, user_id):
+    # Bot token for AIMA_futBot:
+    bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
+    # Insert your ID below.
+    # AIMA_ID = '700187299' <- for AIMA_Services
+    bot_chatID = user_id
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
+    response = requests.get(send_text)
+
+    print(send_text)
+
+    return response.json()
+
 def open_website(url):
 
     # url                 = 'https://www.bet365.es'
@@ -320,28 +334,27 @@ def click_proximas24hrs(browser):
 
     return
 
+
 def get_leagues(browser):
     click_futbol_section(browser)
     click_proximas24hrs(browser)
     browser.save_screenshot("screenshot3.png")
 
     match_dict = {}
-    #Searching by LEAGUES: 
-    try:
-        WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
-    except:
-        return match_dict
+    # Searching by LEAGUES:
+
+    WebDriverWait(browser, 250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
 
     LEAGUES = browser.find_elements_by_xpath(XPATH_LEAGUE)
-    
+
     number_of_leagues = len(LEAGUES)
     counter = 0
     go_down = False
     times = 0
-    
+
     while counter < number_of_leagues:
         if go_down: scroll_down(browser, times)
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE))) 
+        WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
         league_elements = browser.find_elements_by_xpath(XPATH_LEAGUE)
         league = league_elements[counter]
         msg = LINE + league.text + LINE
@@ -349,223 +362,229 @@ def get_leagues(browser):
         print(counter)
         print(len(LEAGUES))
         try:
-            sleep(delay[randint(0,4)]) # Time in seconds.
+            sleep(delay[randint(0, 4)])  # Time in seconds.
             league.click()
-            sleep(delay[randint(0,4)]) # Time in seconds.
-            #browser.back()
+            sleep(delay[randint(0, 4)])  # Time in seconds.
+            # browser.back()
         except (ElementNotVisibleException):
-            if league.text == '': #Ignore it if it's empty 
-                counter+=1
+            if league.text == '':  # Ignore it if it's empty
+                counter += 1
                 continue
             print('exception 1')
             go_down = True
             times += 1
             continue
         except:
-             counter +=1
-             print('ERROR: League is not available anymore')
-             continue
+            counter += 1
+            print('ERROR: League is not available anymore')
+            continue
         # End try-except
 
-        #Extracting MATCHES: 
-        match_dict.update(get_matches(browser,msg))
+        # Extracting MATCHES:
+        match_dict.update(get_matches(browser, msg))
         browser.back()
         click_futbol_section(browser)
         counter += 1
-    # End while
-        
-    browser.quit()
+        # End while
+        break
 
     return match_dict
 
-def xpath_exists(xpath,browser):
+
+def xpath_exists(xpath, browser):
     try:
         browser.find_element_by_xpath(xpath)
     except NoSuchElementException:
         return False
     return True
 
-def detect_btts(browser,min_amount): #min_amount: 1.80
+
+def detect_btts(browser, min_amount):  # min_amount: 1.80
     btts = -1
-    
-    if not xpath_exists(XPATH_BTTS_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_BTTS_CONTAINER,browser):
+
+    if not xpath_exists(XPATH_BTTS_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_BTTS_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "Both Teams to Score"')
             return btts
-        #end if
-    #end if
+        # end if
+    # end if
     container = browser.find_element_by_xpath(XPATH_BTTS_CONTAINER)
-    section = container.find_elements_by_xpath('.'+XPATH_BTTS_OPTION)
+    section = container.find_elements_by_xpath('.' + XPATH_BTTS_OPTION)
     for item in section:
-        yes_or_no   = item.find_element_by_xpath('.'+XPATH_BTTS_YES_NO).text
-        fee         = item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text
+        yes_or_no = item.find_element_by_xpath('.' + XPATH_BTTS_YES_NO).text
+        fee = item.find_element_by_xpath('.' + XPATH_BTTS_FEE).text
         if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes':
             btts = fee
         else:
             continue
-        #end if-else
-    #end for
+        # end if-else
+    # end for
 
     return btts
 
-def detect_over25(browser,min_amount): #min_amount: 1.80
+
+def detect_over25(browser, min_amount):  # min_amount: 1.80
     over25 = -1
 
-    if not xpath_exists(XPATH_OVER25_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_OVER25_CONTAINER,browser):
+    if not xpath_exists(XPATH_OVER25_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_OVER25_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "Goals Over/Under"')
             return over25
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_OVER25_CONTAINER)
-    section = container.find_elements_by_xpath('.'+XPATH_OVER25_SECTION)
+    section = container.find_elements_by_xpath('.' + XPATH_OVER25_SECTION)
     for item in section:
-        option      = container.find_element_by_xpath('.'+XPATH_OVER25_OPTION).text
-        fee         = item.find_element_by_xpath('.'+XPATH_OVER25_FEE).text
+        option = container.find_element_by_xpath('.' + XPATH_OVER25_OPTION).text
+        fee = item.find_element_by_xpath('.' + XPATH_OVER25_FEE).text
         if float(fee) >= float(min_amount) and option == '2.5':
             over25 = fee
         else:
             continue
-        #end if-else
-    #end for    
+        # end if-else
+    # end for
     return over25
 
-def detect_over05_ht(browser, min_amount):  #min_amount: 1.40 
+
+def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
     over05_ht = -1
-    if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION,browser):
+    if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION, browser):
         print('ERROR: Couldn\'t find the element: "Half"')
         return over05_ht
 
     print('Clicking')
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     browser.find_element_by_xpath(XPATH_OVER05_HT_CLICK_SECTION).click()
     print('clicked')
     browser.save_screenshot("screenshot4.png")
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
-    
-    if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+
+    if not xpath_exists(XPATH_OVER05_HT_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_OVER05_HT_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "First Half Goals"')
             browser.back()
             return over05_ht
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_OVER05_HT_CONTAINER)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
-    i = 0 
+    i = 0
     print('OPTIONS: ')
     for item in section:
         print(item.text)
         print(i)
-        i+=1
+        i += 1
 
-    amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-    i=0
+    amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+    i = 0
     print('AMOUNTS')
     for item in amount:
         print(item.text)
         print(i)
-        i+=1
+        i += 1
 
-    if section[0].text == '0.5': #Index 0 for '0.5 HT' 
-        amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-        if float(amount[0].text) >= float(min_amount): #Index 0 for '0.5 HT'
+    if section[0].text == '0.5':  # Index 0 for '0.5 HT'
+        amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+        if float(amount[0].text) >= float(min_amount):  # Index 0 for '0.5 HT'
             over05_ht = amount[0].text
             print(over05_ht)
-  
 
     browser.back()
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return over05_ht
+
 
 def extract_matches_information(browser):
     print('Looking for matches')
     print('->match')
     btts = detect_btts(browser, 1.80)
     over25 = detect_over25(browser, 1.80)
-    print('btts:'+str(btts))
-    print('over25:'+str(over25))
-    match_info_= []
+    print('btts:' + str(btts))
+    print('over25:' + str(over25))
+    match_info_ = []
 
     if float(btts) < 0 or float(over25) < 0: return match_info_
-    
+
     over05_ht = detect_over05_ht(browser, 1.40)
     if float(over05_ht) < 0: return match_info_
 
     match = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
-    date  = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
+    date = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
     print('got a match')
-    new_match = match_info(match,date,btts,over25,over05_ht)
+    new_match = match_info(match, date, btts, over25, over05_ht)
     print(new_match.to_string())
     match_info_.append(new_match)
 
     return match_info_
 
+
 def detect_live_over05ht(browser, min_amount):
     over05_ht = -1
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
-    if not xpath_exists(XPATH_LIVE_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_LIVE_OVER05_HT_CONTAINER,browser):
+    if not xpath_exists(XPATH_LIVE_OVER05_HT_CONTAINER,
+                        browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_LIVE_OVER05_HT_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "1ª mitad - Goles"')
             return over05_ht
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_LIVE_OVER05_HT_CONTAINER)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
-    i = 0 
+    i = 0
 
-    if section[0].text == '0.5': #Index 0 for '0.5 HT' 
-        amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-        if float(amount[0].text) >= float(min_amount): #Index 0 for '0.5 HT'
+    if section[0].text == '0.5':  # Index 0 for '0.5 HT'
+        amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+        if float(amount[0].text) >= float(min_amount):  # Index 0 for '0.5 HT'
             over05_ht = amount[0].text
-            print('over 0.5 ht amount: '+over05_ht)
-  
+            print('over 0.5 ht amount: ' + over05_ht)
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return over05_ht
 
+
 def detect_live_overX(browser, min_amount):
-    overX = [-1,'']
+    overX = [-1, '']
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
-    if not xpath_exists(XPATH_LIVE_OVER_X_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_LIVE_OVER_X_CONTAINER,browser):
+    if not xpath_exists(XPATH_LIVE_OVER_X_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_LIVE_OVER_X_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "Goles en el partido"')
             return overX
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_LIVE_OVER_X_CONTAINER)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
-    i = 0 
+    i = 0
 
-    overX[1] = section[0].text  
-    amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-    if float(amount[0].text) >= float(min_amount): #Index 0 for the next goal
+    overX[1] = section[0].text
+    amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+    if float(amount[0].text) >= float(min_amount):  # Index 0 for the next goal
         overX[0] = amount[0].text
-        print('over X amount: '+overX[0])
-  
-    sleep(delay[randint(0,4)]) # Time in seconds.
+        print('over X amount: ' + overX[0])
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return overX
 
-def extract_live_matches_information(browser,match_dict):
+
+def extract_live_matches_information(browser, match_dict):
     print('here')
-    WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
+    WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
     name = browser.find_element_by_xpath(XPATH_LIVE_NAME).text
     min = browser.find_element_by_xpath(XPATH_LIVE_MIN).text
     option = ''
@@ -573,21 +592,21 @@ def extract_live_matches_information(browser,match_dict):
     time = str(min).split(':')
     minutes = time[0]
     seconds = time[1]
-    total_time = float(minutes) + float(seconds)/60
+    total_time = float(minutes) + float(seconds) / 60
     if total_time < 45.0:
         print('under ht')
-        fee = detect_live_over05ht(browser,1.50)
+        fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
     else:
         print('over ht')
-        result = detect_live_overX(browser,1.50)
+        result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
 
     live_match_info_ = []
-    if float(fee) < 0 : return live_match_info_ 
+    if float(fee) < 0: return live_match_info_
     print('got it')
-    #else do this: 
+    # else do this:
 
     e1_ataques = ''
     e2_ataques = ''
@@ -600,8 +619,9 @@ def extract_live_matches_information(browser,match_dict):
     e1_corners = ''
     e2_corners = ''
 
-    #Extracting information:
-    if not xpath_exists(XPATH_LIVE_STATS_TITLE, browser) and not xpath_exists(XPATH_LIVE_STATS,browser): return live_match_info_ 
+    # Extracting information:
+    if not xpath_exists(XPATH_LIVE_STATS_TITLE, browser) and not xpath_exists(XPATH_LIVE_STATS,
+                                                                              browser): return live_match_info_
     titles = browser.find_elements_by_xpath(XPATH_LIVE_STATS_TITLE)
     stats = browser.find_elements_by_xpath(XPATH_LIVE_STATS)
     corners = browser.find_elements_by_xpath(XPATH_LIVE_CORNERS)
@@ -609,189 +629,191 @@ def extract_live_matches_information(browser,match_dict):
     e2_corners = corners[1].text
     i = 0
 
-    # Getting stats depending on the type ('title' in 'titles'), and storing it for each team. 
+    # Getting stats depending on the type ('title' in 'titles'), and storing it for each team.
     for title in titles:
         if title.text == 'Ataques':
-            e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == 'Ataques peligrosos':
-            e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == '% de posesión':
-            e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == 'Tiro a puerta':
-            e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
-        #end if-elif
-        i+=1
-    #end for
+            e1_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
+            # end if-elif
+        i += 1
+    # end for
 
-    #TODO: Extract corners information
+    # TODO: Extract corners information
     corners = ''
-    #TODO: Add rest of attributes. 
-    match = live_match_info(name,min,e1_ataques,e1_a_peligrosos,e1_tiros_puerta,e1_corners,e1_posesion,
-                 e2_ataques,e2_a_peligrosos,e2_tiros_puerta,e2_corners,e2_posesion,fee,option)
+    # TODO: Add rest of attributes.
+    match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
+                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
-    if match.get_name() in match_dict: #Check if match is inside 'match_dict'.
+    if match.get_name() in match_dict:  # Check if match is inside 'match_dict'.
         live_match_info_.append(match)
 
     return live_match_info_
 
+
 def get_live_leagues(browser, match_dict):
-    #Searching by LEAGUES: 
-    WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_LEAGUE))) 
+    # Searching by LEAGUES:
+    WebDriverWait(browser, 250).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_LEAGUE)))
     LEAGUES = browser.find_elements_by_xpath(XPATH_LIVE_LEAGUE)
-    
+
     number_of_leagues = len(LEAGUES)
     counter = 0
     go_down = False
     times = 0
     while counter < number_of_leagues:
         if go_down: scroll_down(browser, times)
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_LEAGUE))) 
+        WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_LEAGUE)))
         league_elements = browser.find_elements_by_xpath(XPATH_LIVE_LEAGUE)
         if counter >= len(league_elements): break
         league = league_elements[counter]
-        league_name = league.find_element_by_xpath('.'+XPATH_LIVE_LEAGUE_NAME)
+        league_name = league.find_element_by_xpath('.' + XPATH_LIVE_LEAGUE_NAME)
         msg = LINE + league_name.text + LINE
         print(msg)
         print(counter)
         print(len(LEAGUES))
 
-        #Extracting MATCHES: 
-        get_live_matches(browser,msg, league, match_dict)
+        # Extracting MATCHES:
+        get_live_matches(browser, msg, league, match_dict)
         counter += 1
 
     # End while
-        
-    browser.quit()
 
-    return 
-    
+    return
+
+
 def get_live_matches(browser, msg, league, match_dict):
     print('getting matches')
 
     try:
-        WebDriverWait(browser,15).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
+        WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
     except:
         return
-    MATCHES = league.find_elements_by_xpath('.'+XPATH_LIVE_MATCH)
+    MATCHES = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
     print('got matches')
-    #List of matches
+    # List of matches
     counter = 0
     times = 0
     go_down = False
-    matches_information = [] # List of matches 
+    matches_information = []  # List of matches
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH))) 
+        WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
 
         try:
-            matches_elements = league.find_elements_by_xpath('.'+XPATH_LIVE_MATCH)
+            matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
             if counter >= len(matches_elements): break
 
             match = matches_elements[counter]
             print(match.text)
-            sleep(delay[randint(0,4)]) # Time in seconds.
+            sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
-            sleep(delay[randint(0,4)]) # Time in seconds.
+            sleep(delay[randint(0, 4)])  # Time in seconds.
         except StaleElementReferenceException:
-            counter +=1
-            print('ERROR: Match not available anymore') # Error handling 
+            counter += 1
+            print('ERROR: Match not available anymore')  # Error handling
             continue
         except ElementNotSelectableException:
-            #browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
+            # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             print('non visible')
             go_down = True
             times += 1
             continue
         # End try-except
-        # Extrating match information: 
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        # Extrating match information:
+        sleep(delay[randint(0, 4)])  # Time in seconds.
         match_info_ = extract_live_matches_information(browser, match_dict)
-        if match_info_: matches_information.extend(match_info_) 
-        counter+=1
-        print('back') #Flag
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        if match_info_: matches_information.extend(match_info_)
+        counter += 1
+        print('back')  # Flag
+        sleep(delay[randint(0, 4)])  # Time in seconds.
         click_live_general(browser)
     # End while
- 
+
     messages = []
     messages.append(msg)
     for match in matches_information: messages.append(match.to_string())
-    if not matches_information: print('**********False*************') # Flag
-    if matches_information: send_msg_by_groups(messages) # Don't send the message if the matches list is empty
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    if not matches_information: print('**********False*************')  # Flag
+    if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
 
-#Not live matches:
+
+# Not live matches:
 def get_matches(browser, league):
     print('getmatches')
     match_dict = {}
 
     try:
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH))) 
+        WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH)))
     except:
         return match_dict
     MATCHES = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
-    #List of matches
+    # List of matches
     counter = 0
     times = 0
     go_down = False
-    matches_information = [] # List of matches 
+    matches_information = []  # List of matches
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH_CONTAINER))) 
+        WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH_CONTAINER)))
         matches_elements = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
         if counter >= len(matches_elements): break
-        match = matches_elements[counter].find_element_by_xpath('.'+XPATH_MATCH)
+        match = matches_elements[counter].find_element_by_xpath('.' + XPATH_MATCH)
         msg = LINE + match.text + LINE
-        print(msg) # Flag
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        print(msg)  # Flag
+        sleep(delay[randint(0, 4)])  # Time in seconds.
         try:
             match.click()
-            sleep(delay[randint(0,4)]) # Time in seconds.
+            sleep(delay[randint(0, 4)])  # Time in seconds.
             browser.save_screenshot("screenshot3.png")
 
         except ElementNotSelectableException:
-            #browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
+            # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             go_down = True
             times += 1
             continue
         except StaleElementReferenceException:
-            counter +=1
-            print('ERROR: Match not available anymore') # Error handling 
+            counter += 1
+            print('ERROR: Match not available anymore')  # Error handling
             continue
         # End try-except
-        # Extrating match information: 
+        # Extrating match information:
         match_info_ = extract_matches_information(browser)
         if match_info_: matches_information.extend(match_info_)
-        counter+=1
-        print('back') #Flag
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        counter += 1
+        print('back')  # Flag
+        sleep(delay[randint(0, 4)])  # Time in seconds.
         browser.back()
     # End while
- 
+
     messages = []
     messages.append(league)
     for match in matches_information: messages.append(match.to_string())
-    if not matches_information: print('**********False*************') # Flag
-    if matches_information: send_msg_by_groups(messages) # Don't send the message if the matches list is empty
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    if not matches_information: print('**********False*************')  # Flag
+    if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
-    add_match_list_to_dictionary(matches_information,match_dict)
+    add_match_list_to_dictionary(matches_information, match_dict)
     return match_dict
 
+
 def scroll_down(browser, times):
-    
     # Scroll down using PAGE_DOWN button
     for i in range(times):
         browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
 
     return
+
 
 def save_in_file(file_name, object):
     # open the file for writing
@@ -804,11 +826,15 @@ def save_in_file(file_name, object):
     # here we close the fileObject
     fileObject.close()
 
-def load_from_file(file_name, object):
+
+def load_from_file(file_name):
     # we open the file for reading
     fileObject = open(file_name, 'rb')
     # load the object from the file into var b
     object = pickle.load(fileObject)
+
+    return object
+
 
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
@@ -816,18 +842,19 @@ def delete_file_content(fName):
 
     return
 
-def test():
 
+def test():
     url = 'https://www.bet365.es/'
-    browser = open_website(url) 
+    browser = open_website(url)
     click_futbol_section(browser)
     scroll_down(browser)
 
     return;
 
-def main2():
 
+def main2():
     return
+
 
 def main():
     import traceback
@@ -835,60 +862,71 @@ def main():
     browser = open_website(url)
     click_español(browser)
     print('clicked "English"')
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     set_decimal_odds(browser)
-
+    number_of_errors = 0
     match_dict = {}
     file_name = "./matchesFile.txt"
     dict_updated = False
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
     while True:
+        sleep(30)  # 30 secs
         try:
             print('Clicking soccer button')
             now = datetime.now()
             click_futbol_section(browser)
-            print(now > tomorrow_0h)
+            print(now >= tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
                 delete_file_content(file_name)
-                print('pregames')
+                print('Pregames')
                 # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Saving match_dict in a file:
                 dict_updated = True
-                save_in_file(file_name,match_dict)
+                save_in_file(file_name, match_dict)
                 dict_updated = True
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+            if dict_updated == True:
+                print("Loading file")
+                match_dict = load_from_file(file_name)
 
-            if dict_updated:
-                load_from_file(file_name, match_dict)
-
-            if not match_dict: #Checking if the dictionary is empty
+            if not match_dict:  # Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
-            print('live')
+            print('Live matches')
             click_futbol_section(browser)
             click_live_button(browser)
-            get_live_leagues(browser)
+            get_live_leagues(browser, match_dict)
         except Exception:
             print(traceback.print_exc())
+            number_of_errors += 1
             continue
-        #end try-except
-        sleep(5*60)
+        finally:
+            if number_of_errors > 5:
+                bot_send_msg_to("something happened D:", JAVIER_ID)
+                browser.save_screenshot("error_screenshot.png")
+                number_of_errors = 0
+
+        # end try-except
         print("ending while")
-    #end while
+        sleep(5 * 60)
+
+    # end while
 
     warn_msg = "WARNING: Something happened. Please, check the bot"
     print(warn_msg)
     bot_send_msg(warn_msg)
     return
 
+
 def test_bot():
-    btts = [match_info('bcn-madrid','19-03-05','yes','12',BTTS_STRING),match_info('bcn-madrid','19-03-05','yes','12',OVER25_STRING)]
+    btts = [match_info('bcn-madrid', '19-03-05', 'yes', '12', BTTS_STRING),
+            match_info('bcn-madrid', '19-03-05', 'yes', '12', OVER25_STRING)]
     msg = []
     for item in btts:
         msg.append(item.to_string())
@@ -896,5 +934,6 @@ def test_bot():
     send_msg_by_groups(msg)
     return
 
+
 if __name__ == '__main__': main()
-  
+
