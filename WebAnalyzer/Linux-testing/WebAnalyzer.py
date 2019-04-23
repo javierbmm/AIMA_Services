@@ -341,7 +341,9 @@ def click_match_live(browser):
     live_section = browser.find_element_by_xpath(XPATH_MATCH_LIVE_BUTTON)
     sleep(delay[randint(0, 4)])  # Time in seconds.
     live_section.click()
-
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+    live_section.click()
+    
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
