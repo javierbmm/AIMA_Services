@@ -714,7 +714,7 @@ def get_live_leagues(browser, match_dict):
 
 def get_live_matches(browser, msg, league, match_dict):
     print('getting matches')
-    if xpath_exists(XPATH_MATCH_LIVE_BUTTON): click_match_live(browser)
+    if xpath_exists(XPATH_MATCH_LIVE_BUTTON, browser): click_match_live(browser)
 
 
     try:
