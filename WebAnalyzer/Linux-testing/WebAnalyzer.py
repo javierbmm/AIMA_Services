@@ -79,7 +79,7 @@ XPATH_LIVE_TEAM_2 = '//div[@class="ml1-StatWheel_Team2Text "] | //span[@class="m
 XPATH_LIVE_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_LIVE_CORNERS = '//div[@class="ipe-SoccerGridColumn ipe-SoccerGridColumn_ICorner "]//div[@class="ipe-SoccerGridCell "]'
 XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
-
+XPATH_MATCH_LIVE_BUTTON = '//div[contains(.,"Match Live") and starts-with(@class, "lv-ButtonBar_MatchLive ")]'
 
 
 class live_match_info:
@@ -333,6 +333,16 @@ def click_proximas24hrs(browser):
     live_section.click()
     
     sleep(delay[randint(0,4)]) # Time in seconds.
+
+    return
+
+def click_match_live(browser):
+    WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH_LIVE_BUTTON)))
+    live_section = browser.find_element_by_xpath(XPATH_MATCH_LIVE_BUTTON)
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+    live_section.click()
+
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
 
@@ -681,7 +691,8 @@ def get_live_leagues(browser, match_dict):
     
 def get_live_matches(browser, msg, league, match_dict):
     print('getting matches')
-
+    if xpath_exists(XPATH_MATCH_LIVE_BUTTON): click_match_live(browser)
+    
     try:
         WebDriverWait(browser,15).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
     except:
