@@ -346,6 +346,8 @@ def click_match_live(browser):
 
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
+    bot_send_msg_to("Clicked match live button", JAVIER_ID)
+
     return
 
 def get_leagues(browser):
@@ -693,14 +695,13 @@ def get_live_leagues(browser, match_dict):
     
 def get_live_matches(browser, msg, league, match_dict):
     print('getting matches')
-    if xpath_exists(XPATH_MATCH_LIVE_BUTTON, browser): click_match_live(browser)
-    
     try:
         WebDriverWait(browser,15).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
     except:
         return
     MATCHES = league.find_elements_by_xpath('.'+XPATH_LIVE_MATCH)
     print('got matches')
+    if xpath_exists(XPATH_MATCH_LIVE_BUTTON, browser): click_match_live(browser)
     #List of matches
     counter = 0
     times = 0
