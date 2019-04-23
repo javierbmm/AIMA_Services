@@ -24,6 +24,7 @@ LINE = "\n--------------------------------------------\n"
 # Users ID's:
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
+OTHER_ID = '449385522'
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
@@ -214,6 +215,27 @@ def send_msg_by_groups(bot_message):
     # end for
     print('Sending information')
     bot_send_msg(msg)
+
+    send_msg_by_groups_to(bot_message, OTHER_ID)
+
+    return
+
+def send_msg_by_groups_to(bot_message, id):
+    counter = 0
+    msg = ''
+
+    for x in bot_message:
+        print('info: ' + x + LINE)
+        msg += x
+        if (counter >= 10):
+            bot_send_msg_to(msg,id)
+            msg = ''
+            counter = 0
+        # end if
+        counter += 1
+    # end for
+    print('Sending information')
+    bot_send_msg_to(msg,id)
 
     return
 
