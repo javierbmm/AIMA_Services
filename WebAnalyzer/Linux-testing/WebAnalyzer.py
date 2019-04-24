@@ -637,16 +637,16 @@ def extract_live_matches_information(browser,match_dict):
 
     # Getting stats depending on the type ('title' in 'titles'), and storing it for each team. 
     for title in titles:
-        if title.text == 'Ataques':
+        if title.text == 'Attacks':
             e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
             e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
-        elif title.text == 'Ataques peligrosos':
+        elif title.text == 'Dangerous Attacks':
             e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
             e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
-        elif title.text == '% de posesión':
+        elif title.text == 'Possession %':
             e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
             e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
-        elif title.text == 'Tiro a puerta':
+        elif title.text == 'On Target':
             e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
             e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
         #end if-elif
