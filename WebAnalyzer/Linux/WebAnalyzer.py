@@ -679,21 +679,21 @@ def extract_live_matches_information(browser, match_dict):
 
     # Getting stats depending on the type ('title' in 'titles'), and storing it for each team.
     for title in titles:
-        if title.text == 'Ataques':
-            e1_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
-            e2_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
-        elif title.text == 'Ataques peligrosos':
-            e1_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
-            e2_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
-        elif title.text == '% de posesión':
-            e1_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
-            e2_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
-        elif title.text == 'Tiro a puerta':
-            e1_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
-            e2_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
-            # end if-elif
-        i += 1
-    # end for
+        if title.text == 'Attacks':
+            e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+        elif title.text == 'Dangerous Attacks':
+            e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+        elif title.text == 'Possession %':
+            e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+        elif title.text == 'On Target':
+            e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+        #end if-elif
+        i+=1
+    #end for
 
     corners = ''
     match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
