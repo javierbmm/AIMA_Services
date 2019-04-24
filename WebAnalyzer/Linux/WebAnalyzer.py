@@ -105,11 +105,21 @@ class live_match_info:
         self.e2_corners = e2_corners_
         self.e2_posesion = e2_posesion_
 
+        #Half time and full time
+        self.hf_checked = False
+        self.ft_checked = True
+
         return
 
     def get_name(self):
         name = str(self.match_name)
         return name
+
+    def is_ht_checked(self):
+        return self.hf_checked
+
+    def is_ft_checked(self):
+        return self.ft_checked
 
     def to_string(self):
         string = '\n***MATCH(Equipo1 vs Equipo2): ' + str(self.match_name) + '***\n***-MIN:*** ' + self.min
@@ -463,7 +473,7 @@ def detect_btts(browser, min_amount):  # min_amount: 1.80
     for item in section:
         yes_or_no = item.find_element_by_xpath('.' + XPATH_BTTS_YES_NO).text
         fee = item.find_element_by_xpath('.' + XPATH_BTTS_FEE).text
-        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes':
+        if float(fee) <= float(min_amount) and str(yes_or_no) == 'Yes':
             btts = fee
         else:
             continue
@@ -489,7 +499,7 @@ def detect_over25(browser, min_amount):  # min_amount: 1.80
     for item in section:
         option = container.find_element_by_xpath('.' + XPATH_OVER25_OPTION).text
         fee = item.find_element_by_xpath('.' + XPATH_OVER25_FEE).text
-        if float(fee) >= float(min_amount) and option == '2.5':
+        if float(fee) <= float(min_amount) and option == '2.5':
             over25 = fee
         else:
             continue
@@ -539,7 +549,7 @@ def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
 
     if section[0].text == '0.5':  # Index 0 for '0.5 HT'
         amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
-        if float(amount[0].text) >= float(min_amount):  # Index 0 for '0.5 HT'
+        if float(amount[0].text) <= float(min_amount):  # Index 0 for '0.5 HT'
             over05_ht = amount[0].text
             print(over05_ht)
 
@@ -638,20 +648,29 @@ def extract_live_matches_information(browser, match_dict):
     option = ''
     fee = ''
     time = str(min).split(':')
+    hf_checked = False
+    ft_checked = False
     minutes = time[0]
     seconds = time[1]
     total_time = float(minutes) + float(seconds) / 60
-    if total_time < 45.0:
+    live_match_info_ = []
+    from_dict = ''
+    # Check if match is inside 'match_dict' and storing it in from_dict:
+    if name in match_dict:
+        from_dict = match_dict.get(name)
+    else:
+        return live_match_info
+
+    if total_time < 45.0 and from_dict.is_ht_checked():
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
-    else:
+    elif total_time >= 45.0 and from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
 
-    live_match_info_ = []
     if float(fee) < 0: return live_match_info_
     print('got it')
     # else do this:
@@ -700,8 +719,7 @@ def extract_live_matches_information(browser, match_dict):
                             e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
-    if match.get_name() in match_dict:  # Check if match is inside 'match_dict'.
-        live_match_info_.append(match)
+
 
     return live_match_info_
 

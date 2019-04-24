@@ -110,6 +110,14 @@ class live_match_info:
         name = str(self.match_name)
         return name
 
+
+    def is_ht_checked(self):
+        return self.hf_checked
+
+    def is_ft_checked(self):
+        return self.ft_checked
+
+
     def to_string(self):
         string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
         string += '\n***--'+str(self.option)+':*** '+str(self.fee)
@@ -412,104 +420,106 @@ def xpath_exists(xpath,browser):
         return False
     return True
 
-def detect_btts(browser,min_amount): #min_amount: 1.80
+def detect_btts(browser, min_amount):  # min_amount: 1.80
     btts = -1
-    
-    if not xpath_exists(XPATH_BTTS_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_BTTS_CONTAINER,browser):
+
+    if not xpath_exists(XPATH_BTTS_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_BTTS_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "Both Teams to Score"')
             return btts
-        #end if
-    #end if
+        # end if
+    # end if
     container = browser.find_element_by_xpath(XPATH_BTTS_CONTAINER)
-    section = container.find_elements_by_xpath('.'+XPATH_BTTS_OPTION)
+    section = container.find_elements_by_xpath('.' + XPATH_BTTS_OPTION)
     for item in section:
-        yes_or_no   = item.find_element_by_xpath('.'+XPATH_BTTS_YES_NO).text
-        fee         = item.find_element_by_xpath('.'+XPATH_BTTS_FEE).text
-        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes':
+        yes_or_no = item.find_element_by_xpath('.' + XPATH_BTTS_YES_NO).text
+        fee = item.find_element_by_xpath('.' + XPATH_BTTS_FEE).text
+        if float(fee) <= float(min_amount) and str(yes_or_no) == 'Yes':
             btts = fee
         else:
             continue
-        #end if-else
-    #end for
+        # end if-else
+    # end for
 
     return btts
 
-def detect_over25(browser,min_amount): #min_amount: 1.80
+
+def detect_over25(browser, min_amount):  # min_amount: 1.80
     over25 = -1
 
-    if not xpath_exists(XPATH_OVER25_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_OVER25_CONTAINER,browser):
+    if not xpath_exists(XPATH_OVER25_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_OVER25_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "Goals Over/Under"')
             return over25
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_OVER25_CONTAINER)
-    section = container.find_elements_by_xpath('.'+XPATH_OVER25_SECTION)
+    section = container.find_elements_by_xpath('.' + XPATH_OVER25_SECTION)
     for item in section:
-        option      = container.find_element_by_xpath('.'+XPATH_OVER25_OPTION).text
-        fee         = item.find_element_by_xpath('.'+XPATH_OVER25_FEE).text
-        if float(fee) >= float(min_amount) and option == '2.5':
+        option = container.find_element_by_xpath('.' + XPATH_OVER25_OPTION).text
+        fee = item.find_element_by_xpath('.' + XPATH_OVER25_FEE).text
+        if float(fee) <= float(min_amount) and option == '2.5':
             over25 = fee
         else:
             continue
-        #end if-else
-    #end for    
+        # end if-else
+    # end for
     return over25
 
-def detect_over05_ht(browser, min_amount):  #min_amount: 1.40 
+
+def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
     over05_ht = -1
-    if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION,browser):
+    if not xpath_exists(XPATH_OVER05_HT_CLICK_SECTION, browser):
         print('ERROR: Couldn\'t find the element: "Half"')
         return over05_ht
 
     print('Clicking')
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     browser.find_element_by_xpath(XPATH_OVER05_HT_CLICK_SECTION).click()
     print('clicked')
 
-    sleep(delay[randint(0,4)]) # Time in seconds.
-    
-    if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):  # Trying again in case website haven't loaded correctly 
-        sleep(delay[randint(0,4)]) # Time in seconds.
-        if not xpath_exists(XPATH_OVER05_HT_CONTAINER,browser):
+    sleep(delay[randint(0, 4)])  # Time in seconds.
+
+    if not xpath_exists(XPATH_OVER05_HT_CONTAINER, browser):  # Trying again in case website haven't loaded correctly
+        sleep(delay[randint(0, 4)])  # Time in seconds.
+        if not xpath_exists(XPATH_OVER05_HT_CONTAINER, browser):
             print('ERROR: Couldn\'t find the element: "First Half Goals"')
             browser.back()
             return over05_ht
-        #end if
-    #end if
+        # end if
+    # end if
 
     container = browser.find_element_by_xpath(XPATH_OVER05_HT_CONTAINER)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
-    i = 0 
+    i = 0
     print('OPTIONS: ')
     for item in section:
         print(item.text)
         print(i)
-        i+=1
+        i += 1
 
-    amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-    i=0
+    amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+    i = 0
     print('AMOUNTS')
     for item in amount:
         print(item.text)
         print(i)
-        i+=1
+        i += 1
 
-    if section[0].text == '0.5': #Index 0 for '0.5 HT' 
-        amount = container.find_elements_by_xpath('.'+ XPATH_OVER05_HT_FEE)
-        if float(amount[0].text) >= float(min_amount): #Index 0 for '0.5 HT'
+    if section[0].text == '0.5':  # Index 0 for '0.5 HT'
+        amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
+        if float(amount[0].text) <= float(min_amount):  # Index 0 for '0.5 HT'
             over05_ht = amount[0].text
             print(over05_ht)
-  
 
     browser.back()
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return over05_ht
+
 
 def extract_matches_information(browser):
     print('Looking for matches')
@@ -588,32 +598,40 @@ def detect_live_overX(browser, min_amount):
     sleep(delay[randint(0,4)]) # Time in seconds.
 
     return overX
-
-def extract_live_matches_information(browser,match_dict):
+def extract_live_matches_information(browser, match_dict):
     print('here')
-    WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
+    WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
     name = browser.find_element_by_xpath(XPATH_LIVE_NAME).text
     min = browser.find_element_by_xpath(XPATH_LIVE_MIN).text
     option = ''
     fee = ''
     time = str(min).split(':')
+    hf_checked = False
+    ft_checked = False
     minutes = time[0]
     seconds = time[1]
-    total_time = float(minutes) + float(seconds)/60
-    if total_time < 45.0:
-        print('under ht')
-        fee = detect_live_over05ht(browser,1.50)
-        option = 'OVER 0,5 HT'
+    total_time = float(minutes) + float(seconds) / 60
+    live_match_info_ = []
+    from_dict = ''
+    # Check if match is inside 'match_dict' and storing it in from_dict:
+    if name in match_dict:
+        from_dict = match_dict.get(name)
     else:
+        return live_match_info
+
+    if total_time < 45.0 and from_dict.is_ht_checked():
+        print('under ht')
+        fee = detect_live_over05ht(browser, 1.50)
+        option = 'OVER 0,5 HT'
+    elif total_time >= 45.0 and from_dict.is_ft_checked():
         print('over ht')
-        result = detect_live_overX(browser,1.50)
+        result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
 
-    live_match_info_ = []
-    if float(fee) < 0 : return live_match_info_ 
+    if float(fee) < 0: return live_match_info_
     print('got it')
-    #else do this: 
+    # else do this:
 
     e1_ataques = ''
     e2_ataques = ''
@@ -626,8 +644,9 @@ def extract_live_matches_information(browser,match_dict):
     e1_corners = ''
     e2_corners = ''
 
-    #Extracting information:
-    if not xpath_exists(XPATH_LIVE_STATS_TITLE, browser) and not xpath_exists(XPATH_LIVE_STATS,browser): return live_match_info_ 
+    # Extracting information:
+    if not xpath_exists(XPATH_LIVE_STATS_TITLE, browser) and not xpath_exists(XPATH_LIVE_STATS,
+                                                                              browser): return live_match_info_
     titles = browser.find_elements_by_xpath(XPATH_LIVE_STATS_TITLE)
     stats = browser.find_elements_by_xpath(XPATH_LIVE_STATS)
     corners = browser.find_elements_by_xpath(XPATH_LIVE_CORNERS)
@@ -635,33 +654,33 @@ def extract_live_matches_information(browser,match_dict):
     e2_corners = corners[1].text
     i = 0
 
-    # Getting stats depending on the type ('title' in 'titles'), and storing it for each team. 
+    # Getting stats depending on the type ('title' in 'titles'), and storing it for each team.
     for title in titles:
         if title.text == 'Attacks':
-            e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
         elif title.text == 'Dangerous Attacks':
-            e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
         elif title.text == 'Possession %':
-            e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
         elif title.text == 'On Target':
-            e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text 
-            e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text 
+            e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
+            e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
         #end if-elif
         i+=1
     #end for
 
     corners = ''
-    match = live_match_info(name,min,e1_ataques,e1_a_peligrosos,e1_tiros_puerta,e1_corners,e1_posesion,
-                 e2_ataques,e2_a_peligrosos,e2_tiros_puerta,e2_corners,e2_posesion,fee,option)
+    match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
+                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
-    if match.get_name() in match_dict: #Check if match is inside 'match_dict'.
-        live_match_info_.append(match)
+
 
     return live_match_info_
+
 
 def get_live_leagues(browser, match_dict):
     #Searching by LEAGUES: 
