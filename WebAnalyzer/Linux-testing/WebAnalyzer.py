@@ -84,26 +84,31 @@ XPATH_MATCH_LIVE_BUTTON = '//div[contains(.,"Match Live") and starts-with(@class
 
 class live_match_info:
     # Constructor
-    def __init__(self,match_name_,min_,e1_ataques_,e1_ataques_peligrosos_,e1_tiros_puerta_,e1_corners_,e1_posesion_,
-                 e2_ataques_,e2_ataques_peligrosos_,e2_tiros_puerta_,e2_corners_,e2_posesion_,fee_,option_):
-        self.match_name     = match_name_
-        self.min            = min_
-        self.fee            = fee_
-        self.option         = option_
+    def __init__(self, match_name_, min_, e1_ataques_, e1_ataques_peligrosos_, e1_tiros_puerta_, e1_corners_,
+                 e1_posesion_,
+                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_,
+                 ht_checked_=False, ft_checked_=False):
+        self.match_name = match_name_
+        self.min = min_
+        self.fee = fee_
+        self.option = option_
 
-        #Equipo 1:
-        self.e1_ataques        = e1_ataques_
-        self.e1_a_peligrosos   = e1_ataques_peligrosos_
-        self.e1_tiros_puerta   = e1_tiros_puerta_
-        self.e1_corners        = e1_corners_
-        self.e1_posesion       = e1_posesion_
-        #Equipo 2:
-        self.e2_ataques        = e2_ataques_
-        self.e2_a_peligrosos   = e2_ataques_peligrosos_
-        self.e2_tiros_puerta   = e2_tiros_puerta_
-        self.e2_corners        = e2_corners_
-        self.e2_posesion       = e2_posesion_
-        
+        # Equipo 1:
+        self.e1_ataques = e1_ataques_
+        self.e1_a_peligrosos = e1_ataques_peligrosos_
+        self.e1_tiros_puerta = e1_tiros_puerta_
+        self.e1_corners = e1_corners_
+        self.e1_posesion = e1_posesion_
+        # Equipo 2:
+        self.e2_ataques = e2_ataques_
+        self.e2_a_peligrosos = e2_ataques_peligrosos_
+        self.e2_tiros_puerta = e2_tiros_puerta_
+        self.e2_corners = e2_corners_
+        self.e2_posesion = e2_posesion_
+
+        #Half time and full time
+        self.ht_checked = ht_checked_
+        self.ft_checked = ft_checked_
         return
 
     def get_name(self): 
@@ -598,6 +603,7 @@ def detect_live_overX(browser, min_amount):
     sleep(delay[randint(0,4)]) # Time in seconds.
 
     return overX
+
 def extract_live_matches_information(browser, match_dict):
     print('here')
     WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
@@ -606,7 +612,7 @@ def extract_live_matches_information(browser, match_dict):
     option = ''
     fee = ''
     time = str(min).split(':')
-    hf_checked = False
+    ht_checked = False
     ft_checked = False
     minutes = time[0]
     seconds = time[1]
@@ -619,15 +625,17 @@ def extract_live_matches_information(browser, match_dict):
     else:
         return live_match_info
 
-    if total_time < 45.0 and from_dict.is_ht_checked():
+    if total_time < 45.0 and not from_dict.is_ht_checked():
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
+        ht_checked = True
     elif total_time >= 45.0 and from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
+        ft_checked = True
 
     if float(fee) < 0: return live_match_info_
     print('got it')
@@ -674,7 +682,8 @@ def extract_live_matches_information(browser, match_dict):
 
     corners = ''
     match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
-                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
+                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option,
+                            ht_checked, ft_checked)
 
     print(match.to_string())
 
