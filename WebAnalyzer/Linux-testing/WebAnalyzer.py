@@ -904,13 +904,13 @@ def main():
             print(now >= tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
-                delete_file_content(file_name)
                 print('pregames')
                 # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Saving match_dict in a file:
                 dict_updated = True
+                delete_file_content(file_name)
                 save_in_file(file_name,match_dict)
                 dict_updated = True
                 # Updating tomorrows date:
