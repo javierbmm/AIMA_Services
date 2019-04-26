@@ -659,7 +659,7 @@ def extract_live_matches_information(browser, match_dict):
     if name in match_dict:
         from_dict = match_dict.get(name)
     else:
-        return live_match_info
+        return live_match_info_
 
     if total_time < 45.0 and not from_dict.is_ht_checked():
         print('under ht')
