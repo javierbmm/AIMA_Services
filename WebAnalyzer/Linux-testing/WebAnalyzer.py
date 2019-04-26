@@ -414,7 +414,6 @@ def get_leagues(browser):
         click_futbol_section(browser)
         counter += 1
     # End while
-        if counter >= 3 : break
 
     return match_dict
 
