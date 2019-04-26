@@ -499,7 +499,7 @@ def detect_over25(browser, min_amount):  # min_amount: 1.80
     for item in section:
         option = container.find_element_by_xpath('.' + XPATH_OVER25_OPTION).text
         fee = item.find_element_by_xpath('.' + XPATH_OVER25_FEE).text
-        if float(fee) <= float(min_amount) and option == '2.5':
+        if float(fee) <= float(min_amount) and str(option) == '2.5':
             over25 = fee
         else:
             continue
