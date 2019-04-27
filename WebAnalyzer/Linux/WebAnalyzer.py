@@ -25,10 +25,11 @@ LINE = "\n--------------------------------------------\n"
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
 OTHER_ID = '449385522'
+
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
-XPATH_MATCH = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
+XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
 XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-CouponParticipantIPPGBase "]'
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
@@ -39,7 +40,7 @@ XPATH_ODDS_DECIMAL = "//a[starts-with(@class,'hm-DropDownSelections_Item ') and 
 # BTTS:
 BTTS_STRING = 'BTTS'
 XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]'
-XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]'  # Useless
+XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]' # Useless
 XPATH_BTTS_OPTION = '//div[@class="gl-Participant gl-Participant_General gl-Market_CN-2 "]'
 XPATH_BTTS_FEE = '//span[@class="gl-Participant_Odds"]'
 XPATH_BTTS_YES_NO = '//span[@class="gl-Participant_Name"]'
@@ -64,7 +65,7 @@ XPATH_LIVE_GENERAL = '//div[starts-with(@class,"ip-ControlBar_BBarItem ") and co
 XPATH_LIVE_LEAGUE = '//div[@class="ipo-Competition ipo-Competition-open "]'
 XPATH_LIVE_LEAGUE_NAME = '//div[@class="ipo-CompetitionButton_NameLabel ipo-CompetitionButton_NameLabelHasMarketHeading "]'
 XPATH_LIVE_MATCH = '//div[@class="ipo-ScoreDisplayStandard_Wrapper "]'
-XPATH_LIVE_MATCH_CLICK = '//div[@class="sl-CouponParticipantWithBookCloses_NameContainer "]'  # useless
+XPATH_LIVE_MATCH_CLICK = '//div[@class="sl-CouponParticipantWithBookCloses_NameContainer "]' #useless
 XPATH_LIVE_NAME = '//div[starts-with(@class,"ipe-GridHeader_FixtureCell ")]'
 XPATH_LIVE_MIN = '//div[@class="ipe-SoccerHeaderLayout_ExtraData "]'
 XPATH_LIVE_ATAQUES = '//div[@class="ml1-StatsCharts_Column ml1-StatsCharts_Column-left "]'
@@ -80,7 +81,6 @@ XPATH_LIVE_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancest
 XPATH_LIVE_CORNERS = '//div[@class="ipe-SoccerGridColumn ipe-SoccerGridColumn_ICorner "]//div[@class="ipe-SoccerGridCell "]'
 XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_MATCH_LIVE_BUTTON = '//div[contains(.,"Match Live") and starts-with(@class, "lv-ButtonBar_MatchLive ")]'
-
 
 
 class live_match_info:
