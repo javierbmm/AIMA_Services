@@ -364,8 +364,6 @@ def click_match_live(browser):
 
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
-    bot_send_msg_to("Clicked match live button", JAVIER_ID)
-
     return
 
 def get_leagues(browser):
