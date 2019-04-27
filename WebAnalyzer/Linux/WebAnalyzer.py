@@ -82,12 +82,12 @@ XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[
 XPATH_MATCH_LIVE_BUTTON = '//div[contains(.,"Match Live") and starts-with(@class, "lv-ButtonBar_MatchLive ")]'
 
 
+
 class live_match_info:
     # Constructor
     def __init__(self, match_name_, min_, e1_ataques_, e1_ataques_peligrosos_, e1_tiros_puerta_, e1_corners_,
                  e1_posesion_,
-                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_,
-                 ht_checked_=False, ft_checked_=False):
+                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_):
         self.match_name = match_name_
         self.min = min_
         self.fee = fee_
@@ -106,65 +106,72 @@ class live_match_info:
         self.e2_corners = e2_corners_
         self.e2_posesion = e2_posesion_
 
-        #Half time and full time
-        self.ht_checked = ht_checked_
-        self.ft_checked = ft_checked_
-
         return
 
     def get_name(self):
         name = str(self.match_name)
         return name
 
-    def is_ht_checked(self):
-        return self.ht_checked
-
-    def is_ft_checked(self):
-        return self.ft_checked
-
     def to_string(self):
-        string = '\n***MATCH(Equipo1 vs Equipo2): ' + str(self.match_name) + '***\n***-MIN:*** ' + self.min
-        string += '\n***--' + str(self.option) + ':*** ' + str(self.fee)
-        string += '\n***--Ataques:*** ' + str(self.e1_ataques) + '|' + str(self.e2_ataques)
-        string += '\n***--Ataques peligrosos:*** ' + str(self.e1_a_peligrosos) + '|' + str(self.e2_a_peligrosos)
-        string += '\n***--Tiros a puerta:*** ' + str(self.e1_tiros_puerta) + '|' + str(self.e2_tiros_puerta)
-        string += '\n***--Posesion:*** ' + str(self.e1_posesion) + '|' + str(self.e2_posesion)
+        string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
+        string += '\n***--'+str(self.option)+':*** '+str(self.fee)
+        string += '\n***--Ataques:*** ' + str(self.e1_ataques) +'|'+str(self.e2_ataques)
+        string += '\n***--Ataques peligrosos:*** '+ str(self.e1_a_peligrosos) +'|'+str(self.e2_a_peligrosos)
+        string += '\n***--Tiros a puerta:*** '+ str(self.e1_tiros_puerta) +'|'+str(self.e2_tiros_puerta)
+        string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
 
         return string
 
     def __str__(self):
-        string = '\n***MATCH(Equipo1 vs Equipo2): ' + str(self.match_name) + '***\n***-MIN:*** ' + self.min
-        string += '\n***--' + str(self.option) + ':*** ' + str(self.fee)
-        string += '\n***--Ataques:*** ' + str(self.e1_ataques) + '|' + str(self.e2_ataques)
-        string += '\n***--Ataques peligrosos:*** ' + str(self.e1_a_peligrosos) + '|' + str(self.e2_a_peligrosos)
-        string += '\n***--Tiros a puerta:*** ' + str(self.e1_tiros_puerta) + '|' + str(self.e2_tiros_puerta)
-        string += '\n***--Posesion:*** ' + str(self.e1_posesion) + '|' + str(self.e2_posesion)
+        string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
+        string += '\n***--'+str(self.option)+':*** '+str(self.fee)
+        string += '\n***--Ataques:*** ' + str(self.e1_ataques) +'|'+str(self.e2_ataques)
+        string += '\n***--Ataques peligrosos:*** '+ str(self.e1_a_peligrosos) +'|'+str(self.e2_a_peligrosos)
+        string += '\n***--Tiros a puerta:*** '+ str(self.e1_tiros_puerta) +'|'+str(self.e2_tiros_puerta)
+        string += '\n***--Posesion:*** '+ str(self.e1_posesion) +'|'+str(self.e2_posesion)
 
         return string
 
 
+
 class match_info:
     # Constructor
-    def __init__(self, match_name_, date_, btts_, over25_, over05ht_):
+    def __init__(self,match_name_,date_,btts_,over25_,over05ht_,ht_checked_=False, ft_checked_=False ):
         # Variables initialization
-        self.match_name = match_name_
-        self.date = date_
-        self.btts_amount = btts_
-        self.over25_amount = over25_
-        self.over05_ht_amount = over05ht_
+        self.match_name         = match_name_
+        self.date               = date_
+        self.btts_amount        = btts_
+        self.over25_amount      = over25_
+        self.over05_ht_amount   = over05ht_
+
+        #Half time and full time
+        self.ht_checked = ht_checked_
+        self.ft_checked = ft_checked_
+
+    def is_ht_checked(self):
+        return self.ht_checked
+
+
+    def is_ft_checked(self):
+        return self.ft_checked
+
+    def set_ht_checked(self, is_checked):
+        self.ht_checked = is_checked
+
+    def set_ft_checked(self, is_checked):
+        self.ft_checked = is_checked
 
     def get_name(self):
         name = str(self.match_name)
         return name
 
     def to_string(self):
-        string = '\n***MATCH: ' + str(self.match_name)
-        string += '***\n***-Date:*** ' + str(self.date)
-        string += '\n***--BTTS:*** ' + str(self.btts_amount) + '\n***--OVER 2.5:*** ' + str(self.over25_amount)
-        string += '\n***--OVER 0.5 HT:*** ' + str(self.over05_ht_amount)
+        string = '\n***MATCH: '+str(self.match_name)
+        string +='***\n***-Date:*** '+str(self.date)
+        string +='\n***--BTTS:*** '+str(self.btts_amount)+'\n***--OVER 2.5:*** '+str(self.over25_amount)
+        string +='\n***--OVER 0.5 HT:*** '+str(self.over05_ht_amount)
 
         return string
-
 
 # Not used classes:
 class BTTS:
@@ -445,7 +452,7 @@ def get_leagues(browser):
         browser.back()
         click_futbol_section(browser)
         counter += 1
-        # End while
+    # End while
 
     return match_dict
 
@@ -499,7 +506,8 @@ def detect_over25(browser, min_amount):  # min_amount: 1.80
     for item in section:
         option = container.find_element_by_xpath('.' + XPATH_OVER25_OPTION).text
         fee = item.find_element_by_xpath('.' + XPATH_OVER25_FEE).text
-        if float(fee) <= float(min_amount) and str(option) == "2.5":
+        print(fee)
+        if fee and float(fee) <= float(min_amount) and str(option) == "2.5":
             over25 = fee
         else:
             continue
@@ -661,22 +669,27 @@ def extract_live_matches_information(browser, match_dict):
     else:
         return live_match_info_
 
+    print("match inside dict")
     if total_time < 45.0 and not from_dict.is_ht_checked():
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
         ht_checked = True
-    elif total_time >= 45.0 and from_dict.is_ft_checked():
+        from_dict.set_ht_checked(ht_checked)
+    elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
         ft_checked = True
+        from_dict.set_ft_checked(ft_checked)
 
     if float(fee) < 0: return live_match_info_
     print('got it')
-    # else do this:
-
+    # else
+    # update dict:
+    match_dict[name] = from_dict;
+    # variables initialization
     e1_ataques = ''
     e2_ataques = ''
     e1_a_peligrosos = ''
@@ -701,28 +714,27 @@ def extract_live_matches_information(browser, match_dict):
     # Getting stats depending on the type ('title' in 'titles'), and storing it for each team.
     for title in titles:
         if title.text == 'Attacks':
-            e1_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
-            e2_ataques = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+            e1_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_ataques = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == 'Dangerous Attacks':
-            e1_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
-            e2_a_peligrosos = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+            e1_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_a_peligrosos = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == 'Possession %':
-            e1_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
-            e2_posesion = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
+            e1_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_posesion = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
         elif title.text == 'On Target':
-            e1_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_1).text
-            e2_tiros_puerta = stats[i].find_element_by_xpath('.'+XPATH_LIVE_TEAM_2).text
-        #end if-elif
-        i+=1
-    #end for
+            e1_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_1).text
+            e2_tiros_puerta = stats[i].find_element_by_xpath('.' + XPATH_LIVE_TEAM_2).text
+        # end if-elif
+        i += 1
+    # end for
 
     corners = ''
     match = live_match_info(name, min, e1_ataques, e1_a_peligrosos, e1_tiros_puerta, e1_corners, e1_posesion,
-                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option,
-                            ht_checked, ft_checked)
+                            e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
-
+    live_match_info_.append(match)
 
     return live_match_info_
 
@@ -766,7 +778,6 @@ def get_live_matches(browser, msg, league, match_dict):
     MATCHES = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
     print('got matches')
     if xpath_exists(XPATH_MATCH_LIVE_BUTTON, browser): click_match_live(browser)
-
     # List of matches
     counter = 0
     times = 0
@@ -799,7 +810,9 @@ def get_live_matches(browser, msg, league, match_dict):
         # Extrating match information:
         sleep(delay[randint(0, 4)])  # Time in seconds.
         match_info_ = extract_live_matches_information(browser, match_dict)
-        if match_info_: matches_information.extend(match_info_)
+        if match_info_:
+            matches_information.extend(match_info_)
+            print("match info")
         counter += 1
         print('back')  # Flag
         sleep(delay[randint(0, 4)])  # Time in seconds.
@@ -929,17 +942,17 @@ def main():
     browser = open_website(url)
     click_español(browser)
     print('clicked "English"')
-    sleep(delay[randint(0, 4)])  # Time in seconds.
+    sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
     match_dict = {}
     dict_updated = False
     file_name = "./matchesFile.txt"
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
-        sleep(30)  # 30 secs
+        sleep(30) # 30 secs
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -947,24 +960,23 @@ def main():
             print(now >= tomorrow_0h)
             if now >= tomorrow_0h:
                 dict_updated = False
-                delete_file_content(file_name)
                 print('pregames')
                 # Updating match_dict
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Saving match_dict in a file:
                 dict_updated = True
-                save_in_file(file_name, match_dict)
+                delete_file_content(file_name)
+                save_in_file(file_name,match_dict)
                 dict_updated = True
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-            print("im here")
             if dict_updated == True:
                 print("loading file")
                 match_dict = load_from_file(file_name)
 
-            if not match_dict:  # Checking if the dictionary is empty
+            if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
             print('live')
@@ -973,25 +985,23 @@ def main():
             get_live_leagues(browser, match_dict)
         except Exception:
             print(traceback.print_exc())
-            number_of_errors += 1
+            number_of_errors+=1
             continue
         finally:
             if number_of_errors > 2:
                 bot_send_msg_to("FROM: AIMA_Services\n->Something happened.", JAVIER_ID)
-                browser.save_screenshot("error_screenshot.png")
                 number_of_errors = 0
 
-        # end try-except
+        #end try-except
         print("ending while")
-        sleep(5 * 60)
+        sleep(5*60)
 
-    # end while
+    #end while
 
     warn_msg = "WARNING: Something happened. Please, check the bot"
     print(warn_msg)
     bot_send_msg(warn_msg)
     return
-
 
 def test_bot():
     btts = [match_info('bcn-madrid', '19-03-05', 'yes', '12', BTTS_STRING),

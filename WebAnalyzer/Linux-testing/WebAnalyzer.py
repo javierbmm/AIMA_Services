@@ -25,6 +25,8 @@ LINE = "\n--------------------------------------------\n"
 # Users ID's:
 AIMA_ID = '846646570'   # AIMA_Services
 JAVIER_ID = '394580187' # Javier Merida
+OTHER_ID = '449385522'
+
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
@@ -233,7 +235,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     #Insert your ID below. 
     #AIMA_ID = '700187299' <- for AIMA_Services 
-    bot_chatID = JAVIER_ID
+    bot_chatID = AIMA_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -832,7 +834,6 @@ def get_matches(browser, league):
         print('back') #Flag
         sleep(delay[randint(0,4)]) # Time in seconds.
         browser.back()
-        if counter >= 10 : break
     # End while
 
     messages = []
@@ -927,7 +928,6 @@ def main():
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
-            print("im here")
             if dict_updated == True:
                 print("loading file")
                 match_dict = load_from_file(file_name)
@@ -945,8 +945,7 @@ def main():
             continue
         finally:
             if number_of_errors > 2:
-                bot_send_msg_to("something happened D:", JAVIER_ID)
-                browser.save_screenshot("error_screenshot.png")
+                bot_send_msg_to("FROM: Javier\n->Something happened.", JAVIER_ID)
                 number_of_errors = 0
 
         #end try-except
