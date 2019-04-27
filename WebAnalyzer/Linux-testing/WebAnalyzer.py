@@ -636,7 +636,7 @@ def extract_live_matches_information(browser, match_dict):
         option = 'OVER 0,5 HT'
         ht_checked = True
         from_dict.set_ht_checked(ht_checked)
-    elif total_time >= 45.0 and from_dict.is_ft_checked():
+    elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
