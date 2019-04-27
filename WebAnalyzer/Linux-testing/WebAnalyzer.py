@@ -28,7 +28,8 @@ JAVIER_ID = '394580187' # Javier Merida
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
-XPATH_MATCH  = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
+XPATH_MATCH_CONTAINER_TEST = '//div[@class= "sl-CouponParticipantWithBookCloses_NameContainer "]'
+XPATH_MATCH = '//div[starts-with(@class,"sl-CouponParticipantWithBookCloses_Name ")]'
 XPATH_MATCH_CONTAINER = '//div[@class= "sl-CouponParticipantWithBookCloses sl-CouponParticipantIPPGBase "]'
 XPATH_HOME = '//'
 XPATH_HOME_BUTTON = "//a[@class='hm-HeaderModule_Logo ']"
@@ -794,7 +795,7 @@ def get_matches(browser, league):
         WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH))) 
     except:
         return match_dict
-    MATCHES = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
+    MATCHES = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER_TEST) #TODO: Change for XPATH_MATCH_CONTAINER
     #List of matches
     counter = 0
     times = 0
@@ -802,8 +803,8 @@ def get_matches(browser, league):
     matches_information = [] # List of matches 
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
-        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH_CONTAINER))) 
-        matches_elements = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
+        WebDriverWait(browser,150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH_CONTAINER_TEST)))
+        matches_elements = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER_TEST)
         if counter >= len(matches_elements): break
         match = matches_elements[counter].find_element_by_xpath('.'+XPATH_MATCH)
         msg = LINE + match.text + LINE
