@@ -693,7 +693,7 @@ def extract_live_matches_information(browser, match_dict):
                             e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
-    live_match_info_.extend(match)
+    live_match_info_.append(match)
 
     return live_match_info_
 
