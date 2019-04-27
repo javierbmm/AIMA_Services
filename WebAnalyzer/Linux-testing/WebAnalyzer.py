@@ -86,8 +86,7 @@ class live_match_info:
     # Constructor
     def __init__(self, match_name_, min_, e1_ataques_, e1_ataques_peligrosos_, e1_tiros_puerta_, e1_corners_,
                  e1_posesion_,
-                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_,
-                 ht_checked_=False, ft_checked_=False):
+                 e2_ataques_, e2_ataques_peligrosos_, e2_tiros_puerta_, e2_corners_, e2_posesion_, fee_, option_):
         self.match_name = match_name_
         self.min = min_
         self.fee = fee_
@@ -106,22 +105,11 @@ class live_match_info:
         self.e2_corners = e2_corners_
         self.e2_posesion = e2_posesion_
 
-        #Half time and full time
-        self.ht_checked = ht_checked_
-        self.ft_checked = ft_checked_
         return
 
     def get_name(self): 
         name = str(self.match_name)
         return name
-
-
-    def is_ht_checked(self):
-        return self.hf_checked
-
-    def is_ft_checked(self):
-        return self.ft_checked
-
 
     def to_string(self):
         string = '\n***MATCH(Equipo1 vs Equipo2): '+str(self.match_name)+'***\n***-MIN:*** '+self.min
@@ -147,13 +135,30 @@ class live_match_info:
 
 class match_info:
     # Constructor
-    def __init__(self,match_name_,date_,btts_,over25_,over05ht_):
+    def __init__(self,match_name_,date_,btts_,over25_,over05ht_,ht_checked_=False, ft_checked_=False ):
         # Variables initialization
         self.match_name         = match_name_
         self.date               = date_
         self.btts_amount        = btts_
         self.over25_amount      = over25_
         self.over05_ht_amount   = over05ht_
+
+        #Half time and full time
+        self.ht_checked = ht_checked_
+        self.ft_checked = ft_checked_
+
+    def is_ht_checked(self):
+        return self.hf_checked
+
+
+    def is_ft_checked(self):
+        return self.ft_checked
+
+    def set_ht_checked(self, is_checked):
+        self.ht_checked = is_checked
+
+    def set_ft_checked(self, is_checked):
+        self.ft_checked = is_checked
 
     def get_name(self): 
         name = str(self.match_name)
@@ -632,17 +637,21 @@ def extract_live_matches_information(browser, match_dict):
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
         ht_checked = True
+        from_dict.set_ht_checked(ht_checked)
     elif total_time >= 45.0 and from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
         ft_checked = True
+        from_dict.set_ft_checked(ft_checked)
 
     if float(fee) < 0: return live_match_info_
     print('got it')
-    # else do this:
-
+    # else
+    # update dict:
+    match_dict[name] = from_dict;
+    # variables initialization
     e1_ataques = ''
     e2_ataques = ''
     e1_a_peligrosos = ''
