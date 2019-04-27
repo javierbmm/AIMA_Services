@@ -369,13 +369,12 @@ def click_match_live(browser):
 
 def get_leagues(browser):
     click_futbol_section(browser)
-    click_proximas24hrs(browser)
+    #click_proximas24hrs(browser)
 
     match_dict = {}
     #Searching by LEAGUES: 
 
     WebDriverWait(browser,250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
-
 
     LEAGUES = browser.find_elements_by_xpath(XPATH_LEAGUE)
     
