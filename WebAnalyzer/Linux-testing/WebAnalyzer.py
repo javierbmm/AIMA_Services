@@ -830,7 +830,7 @@ def get_matches(browser, league):
         print('back') #Flag
         sleep(delay[randint(0,4)]) # Time in seconds.
         browser.back()
-        if counter >= 5 : break
+        if counter >= 10 : break
     # End while
 
     messages = []
