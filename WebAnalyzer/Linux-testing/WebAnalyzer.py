@@ -693,6 +693,7 @@ def extract_live_matches_information(browser, match_dict):
                             e2_ataques, e2_a_peligrosos, e2_tiros_puerta, e2_corners, e2_posesion, fee, option)
 
     print(match.to_string())
+    live_match_info_.extend(match)
 
     return live_match_info_
 
@@ -756,7 +757,7 @@ def get_live_matches(browser, msg, league, match_dict):
             sleep(delay[randint(0,4)]) # Time in seconds.
         except StaleElementReferenceException:
             counter +=1
-            print('ERROR: Match not available anymore') # Error handling 
+            print('ERROR: Match not available anymore')  # Error handling
             continue
         except ElementNotSelectableException:
             #browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
@@ -766,21 +767,23 @@ def get_live_matches(browser, msg, league, match_dict):
             continue
         # End try-except
         # Extrating match information: 
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        sleep(delay[randint(0,4)])  # Time in seconds.
         match_info_ = extract_live_matches_information(browser, match_dict)
-        if match_info_: matches_information.extend(match_info_) 
+        if match_info_:
+            matches_information.extend(match_info_)
+            print("match info")
         counter+=1
-        print('back') #Flag
-        sleep(delay[randint(0,4)]) # Time in seconds.
+        print('back')  #Flag
+        sleep(delay[randint(0,4)])  # Time in seconds.
         click_live_general(browser)
     # End while
  
     messages = []
     messages.append(msg)
     for match in matches_information: messages.append(match.to_string())
-    if not matches_information: print('**********False*************') # Flag
-    if matches_information: send_msg_by_groups(messages) # Don't send the message if the matches list is empty
-    sleep(delay[randint(0,4)]) # Time in seconds.
+    if not matches_information: print('**********False*************')  # Flag
+    if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
+    sleep(delay[randint(0,4)])  # Time in seconds.
 
     return
 
