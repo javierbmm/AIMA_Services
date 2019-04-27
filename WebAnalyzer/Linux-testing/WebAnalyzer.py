@@ -148,7 +148,7 @@ class match_info:
         self.ft_checked = ft_checked_
 
     def is_ht_checked(self):
-        return self.hf_checked
+        return self.ht_checked
 
 
     def is_ft_checked(self):
