@@ -451,6 +451,7 @@ def get_leagues(browser):
         match_dict.update(get_matches(browser, msg))
         browser.back()
         click_futbol_section(browser)
+        click_proximas24hrs(browser)
         counter += 1
     # End while
 
@@ -983,6 +984,11 @@ def main():
             click_futbol_section(browser)
             click_live_button(browser)
             get_live_leagues(browser, match_dict)
+
+            # Updating file:
+            delete_file_content(file_name)
+            save_in_file(file_name, match_dict)
+            dict_updated = True
         except Exception:
             print(traceback.print_exc())
             number_of_errors+=1
