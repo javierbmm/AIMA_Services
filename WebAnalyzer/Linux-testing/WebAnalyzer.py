@@ -790,25 +790,25 @@ def get_live_matches(browser, msg, league, match_dict):
         if go_down: scroll_down(browser, times)
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
 
+        matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
+        if counter >= len(matches_elements): break
         try:
-            matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
-            if counter >= len(matches_elements): break
-
             match = matches_elements[counter]
             print(match.text)
+        except Exception:
+            print(traceback.print_exc())
+            browser.save_screenshot("error.png")
+            counter += 1
+            continue
+        try:
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-        except ElementNotSelectableException:
+        except (ElementNotSelectableException, StaleElementReferenceException):
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             print('non visible')
             go_down = True
             times += 1
-            continue
-        except StaleElementReferenceException:
-            counter += 1
-            print('ERROR: Match not available anymore')  # Error handling
-            browser.save_screenshot("error.png")
             continue
         except Exception:
             print(traceback.print_exc())
