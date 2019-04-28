@@ -947,10 +947,10 @@ def main():
     set_decimal_odds(browser)
     number_of_errors = 0
     match_dict = {}
-    dict_updated = False
+    dict_updated = True
     file_name = "./matchesFile.txt"
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         sleep(30) # 30 secs
