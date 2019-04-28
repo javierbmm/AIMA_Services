@@ -799,16 +799,16 @@ def get_live_matches(browser, msg, league, match_dict):
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-        except StaleElementReferenceException:
-            counter += 1
-            print('ERROR: Match not available anymore')  # Error handling
-            browser.save_screenshot("error.png")
-            continue
         except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             print('non visible')
             go_down = True
             times += 1
+            continue
+        except StaleElementReferenceException:
+            counter += 1
+            print('ERROR: Match not available anymore')  # Error handling
+            browser.save_screenshot("error.png")
             continue
         except Exception:
             print(traceback.print_exc())
