@@ -800,6 +800,7 @@ def get_live_matches(browser, msg, league, match_dict):
         except StaleElementReferenceException:
             counter += 1
             print('ERROR: Match not available anymore')  # Error handling
+            browser.save_screenshot("error.png")
             continue
         except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
