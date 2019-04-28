@@ -785,12 +785,12 @@ def get_live_matches(browser, msg, league, match_dict):
     times = 0
     go_down = False
     matches_information = []  # List of matches
-    league_name = league.find_element_by_xpath('.' + XPATH_LIVE_LEAGUE_NAME)
+    league_name = league.find_element_by_xpath('.' + XPATH_LIVE_LEAGUE_NAME).text
 
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
-        league_xpath = "//div[contains(text(),'"+league_name.text+"')]/ancestor::div/ancestor::div"
+        league_xpath = "//div[contains(text(),'"+league_name+"')]/ancestor::div/ancestor::div"
         league = browser.find_element_by_xpath(league_xpath)
         matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
         if counter >= len(matches_elements): break
