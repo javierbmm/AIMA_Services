@@ -894,6 +894,7 @@ def scroll_down(browser, times):
     for i in range(times):
         browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
 
+    print('scrolled down')
     return
 
 
