@@ -18,6 +18,8 @@ from datetime import datetime, time, timedelta, date
 import urllib3.exceptions
 from time import sleep
 from random import randint
+import traceback
+
 
 delay = [1, 2, 1.5, 2, 2.3]
 LINE = "\n--------------------------------------------\n"
@@ -808,6 +810,10 @@ def get_live_matches(browser, msg, league, match_dict):
             go_down = True
             times += 1
             continue
+        except Exception:
+            print(traceback.print_exc())
+            continue
+
         # End try-except
         # Extrating match information:
         sleep(delay[randint(0, 4)])  # Time in seconds.
@@ -940,7 +946,6 @@ def main2():
 
 
 def main():
-    import traceback
     url = 'https://www.bet365.com/'
     browser = open_website(url)
     click_español(browser)
