@@ -27,7 +27,8 @@ LINE = "\n--------------------------------------------\n"
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
 OTHER_ID = '449385522'
-
+#File to store dictionary with information of matches:
+FILE = "./matchesFile.txt"
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
@@ -806,11 +807,15 @@ def get_live_matches(browser, msg, league, match_dict):
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-        except (ElementNotSelectableException, StaleElementReferenceException):
+        except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             print('non visible')
             go_down = True
             times += 1
+            continue
+        except StaleElementReferenceException:
+            print('ERROR: Match not available anymore')
+            counter += 1
             continue
         except Exception:
             print(traceback.print_exc())
@@ -835,6 +840,10 @@ def get_live_matches(browser, msg, league, match_dict):
     if not matches_information: print('**********False*************')  # Flag
     if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
     sleep(delay[randint(0, 4)])  # Time in seconds.
+
+    # Updating file:
+    delete_file_content(FILE)
+    save_in_file(FILE, match_dict)
 
     return
 
@@ -957,7 +966,6 @@ def main():
     number_of_errors = 0
     match_dict = {}
     dict_updated = True
-    file_name = "./matchesFile.txt"
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
@@ -975,8 +983,8 @@ def main():
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Saving match_dict in a file:
-                delete_file_content(file_name)
-                save_in_file(file_name,match_dict)
+                delete_file_content(FILE)
+                save_in_file(FILE,match_dict)
                 dict_updated = True
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
@@ -993,8 +1001,8 @@ def main():
             click_live_button(browser)
             get_live_leagues(browser, match_dict)
             # Updating file:
-            delete_file_content(file_name)
-            save_in_file(file_name, match_dict)
+            delete_file_content(FILE)
+            save_in_file(FILE, match_dict)
             dict_updated = True
         except Exception:
             print(traceback.print_exc())

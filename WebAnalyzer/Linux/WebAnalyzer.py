@@ -18,6 +18,7 @@ from datetime import datetime, time, timedelta, date
 import urllib3.exceptions
 from time import sleep
 from random import randint
+import traceback
 
 delay = [1, 2, 1.5, 2, 2.3]
 LINE = "\n--------------------------------------------\n"
@@ -25,7 +26,8 @@ LINE = "\n--------------------------------------------\n"
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
 OTHER_ID = '449385522'
-
+#File to store dictionary with information of matches:
+FILE = "./matchesFile.txt"
 # List of XPath's:
 XPATH_SECTION = '//div[starts-with(@class, "lpdgl")]'
 XPATH_LEAGUE = '//div[@class="sm-CouponLink_Label "]'
@@ -649,6 +651,7 @@ def detect_live_overX(browser, min_amount):
     return overX
 
 
+
 def extract_live_matches_information(browser, match_dict):
     print('here')
     WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_NAME)))
@@ -760,7 +763,6 @@ def get_live_leagues(browser, match_dict):
         print(msg)
         print(counter)
         print(len(LEAGUES))
-
         # Extracting MATCHES:
         get_live_matches(browser, msg, league, match_dict)
         counter += 1
@@ -784,29 +786,41 @@ def get_live_matches(browser, msg, league, match_dict):
     times = 0
     go_down = False
     matches_information = []  # List of matches
+    league_name = league.find_element_by_xpath('.' + XPATH_LIVE_LEAGUE_NAME).text
+
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
-
+        league_xpath = "//div[contains(text(),'" + league_name + "')]/ancestor::div/ancestor::div"
+        league = browser.find_element_by_xpath(league_xpath)
+        matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
+        if counter >= len(matches_elements): break
         try:
-            matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
-            if counter >= len(matches_elements): break
-
             match = matches_elements[counter]
             print(match.text)
+        except Exception:
+            print(traceback.print_exc())
+            browser.save_screenshot("error.png")
+            counter += 1
+            continue
+        try:
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-        except StaleElementReferenceException:
-            counter += 1
-            print('ERROR: Match not available anymore')  # Error handling
-            continue
         except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             print('non visible')
             go_down = True
             times += 1
             continue
+        except StaleElementReferenceException:
+            print('ERROR: Match not available anymore')
+            counter += 1
+            continue
+        except Exception:
+            print(traceback.print_exc())
+            continue
+
         # End try-except
         # Extrating match information:
         sleep(delay[randint(0, 4)])  # Time in seconds.
@@ -826,6 +840,10 @@ def get_live_matches(browser, msg, league, match_dict):
     if not matches_information: print('**********False*************')  # Flag
     if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
     sleep(delay[randint(0, 4)])  # Time in seconds.
+
+    # Updating file:
+    delete_file_content(FILE)
+    save_in_file(FILE, match_dict)
 
     return
 
@@ -953,7 +971,7 @@ def main():
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
-        sleep(30) # 30 secs
+        sleep(30)  # 30 secs
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -966,9 +984,8 @@ def main():
                 match_dict.clear()
                 match_dict.update(get_leagues(browser))
                 # Saving match_dict in a file:
-                dict_updated = True
-                delete_file_content(file_name)
-                save_in_file(file_name,match_dict)
+                delete_file_content(FILE)
+                save_in_file(FILE, match_dict)
                 dict_updated = True
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
@@ -977,17 +994,16 @@ def main():
                 print("loading file")
                 match_dict = load_from_file(file_name)
 
-            if not match_dict: #Checking if the dictionary is empty
+            if not match_dict:  # Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
                 continue
             print('live')
             click_futbol_section(browser)
             click_live_button(browser)
             get_live_leagues(browser, match_dict)
-
             # Updating file:
-            delete_file_content(file_name)
-            save_in_file(file_name, match_dict)
+            delete_file_content(FILE)
+            save_in_file(FILE, match_dict)
             dict_updated = True
         except Exception:
             print(traceback.print_exc())
