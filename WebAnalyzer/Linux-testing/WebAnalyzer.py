@@ -687,6 +687,7 @@ def extract_live_matches_information(browser, match_dict):
         option = 'OVER ' + str(result[1])
         ft_checked = True
         from_dict.set_ft_checked(ft_checked)
+    else: return live_match_info_
 
     if float(fee) < 0: return live_match_info_
     print('got it')
@@ -965,9 +966,9 @@ def main():
     set_decimal_odds(browser)
     number_of_errors = 0
     match_dict = {}
-    dict_updated = False
+    dict_updated = True
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         sleep(30) # 30 secs
