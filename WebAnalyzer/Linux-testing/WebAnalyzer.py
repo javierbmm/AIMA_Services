@@ -965,9 +965,9 @@ def main():
     set_decimal_odds(browser)
     number_of_errors = 0
     match_dict = {}
-    dict_updated = True
+    dict_updated = False
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         sleep(30) # 30 secs
@@ -991,7 +991,7 @@ def main():
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
             if dict_updated == True:
                 print("loading file")
-                match_dict = load_from_file(file_name)
+                match_dict = load_from_file(FILE)
 
             if not match_dict: #Checking if the dictionary is empty
                 print('Empty dictionary. Trying again')
