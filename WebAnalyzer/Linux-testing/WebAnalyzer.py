@@ -658,7 +658,7 @@ def extract_live_matches_information(browser, match_dict):
     name = browser.find_element_by_xpath(XPATH_LIVE_NAME).text
     min = browser.find_element_by_xpath(XPATH_LIVE_MIN).text
     option = ''
-    fee = ''
+    fee = -1
     time = str(min).split(':')
     ht_checked = False
     ft_checked = False
@@ -687,7 +687,8 @@ def extract_live_matches_information(browser, match_dict):
         option = 'OVER ' + str(result[1])
         ft_checked = True
         from_dict.set_ft_checked(ft_checked)
-    else: return live_match_info_
+    else:
+        return live_match_info_
 
     if float(fee) < 0: return live_match_info_
     print('got it')
