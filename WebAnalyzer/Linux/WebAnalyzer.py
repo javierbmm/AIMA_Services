@@ -22,6 +22,7 @@ import traceback
 
 delay = [1, 1.4, 1.3, 1.2, 1.1]
 LINE = "\n--------------------------------------------\n"
+match_dict = {}
 # Users ID's:
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
@@ -578,14 +579,17 @@ def extract_matches_information(browser):
     print('btts:' + str(btts))
     print('over25:' + str(over25))
     match_info_ = []
+    match = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
+    date = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
+    # Check if match is inside 'match_dict' and storing it in from_dict:
+    if match in match_dict:
+        return match_info_
 
     if float(btts) < 0 or float(over25) < 0: return match_info_
 
     over05_ht = detect_over05_ht(browser, 1.40)
     if float(over05_ht) < 0: return match_info_
 
-    match = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
-    date = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
     print('got a match')
     new_match = match_info(match, date, btts, over25, over05_ht)
     print(new_match.to_string())
@@ -966,7 +970,6 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    match_dict = {}
     dict_updated = False
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
