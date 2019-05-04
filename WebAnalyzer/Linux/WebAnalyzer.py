@@ -976,6 +976,8 @@ def main():
         browser.quit()
         browser = open_website(url)
         click_español(browser)
+        set_decimal_odds(browser)
+
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -1021,6 +1023,7 @@ def main():
                 browser.quit()
                 browser = open_website(url)
                 click_español(browser)
+                set_decimal_odds(browser)
 
         #end try-except
         print("ending while")
