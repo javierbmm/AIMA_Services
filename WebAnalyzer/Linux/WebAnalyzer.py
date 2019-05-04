@@ -972,7 +972,10 @@ def main():
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
-        sleep(30)  # 30 secs
+        #sleep(30)  # 30 secs
+        browser.quit()
+        browser = open_website(url)
+        click_español(browser)
         try:
             print('Clicking soccer button')
             now = datetime.now()
@@ -1011,9 +1014,13 @@ def main():
             number_of_errors+=1
             continue
         finally:
-            if number_of_errors > 2:
+            if number_of_errors > 5:
                 bot_send_msg_to("FROM: AIMA_Services\n->Something happened.", JAVIER_ID)
                 number_of_errors = 0
+                #Open website again:
+                browser.quit()
+                browser = open_website(url)
+                click_español(browser)
 
         #end try-except
         print("ending while")
