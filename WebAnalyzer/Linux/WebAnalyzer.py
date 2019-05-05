@@ -22,7 +22,7 @@ import traceback
 
 delay = [1, 1.4, 1.3, 1.2, 1.1]
 LINE = "\n--------------------------------------------\n"
-match_dict = {}
+global match_dict
 # Users ID's:
 AIMA_ID = '846646570'  # AIMA_Services
 JAVIER_ID = '394580187'  # Javier Merida
@@ -237,7 +237,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -266,7 +266,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -972,6 +972,7 @@ def main():
     set_decimal_odds(browser)
     number_of_errors = 0
     dict_updated = False
+    match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
