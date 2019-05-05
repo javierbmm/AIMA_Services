@@ -237,7 +237,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -266,7 +266,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -581,9 +581,6 @@ def extract_matches_information(browser):
     match_info_ = []
     match = browser.find_element_by_xpath(XPATH_BTTS_MATCH).text
     date = browser.find_element_by_xpath(XPATH_BTTS_DATE).text
-    # Check if match is inside 'match_dict' and storing it in from_dict:
-    if match in match_dict:
-        return match_info_
 
     if float(btts) < 0 or float(over25) < 0: return match_info_
 
@@ -878,10 +875,14 @@ def get_matches(browser, league):
         msg = LINE + match.text + LINE
         print(msg)  # Flag
         sleep(delay[randint(0, 4)])  # Time in seconds.
+        # Check if match is inside 'match_dict' and storing it in from_dict:
+        if match.text in match_dict:
+            counter+=1
+            print('Match already in dict')
+            continue
         try:
             match.click()
             sleep(delay[randint(0, 4)])  # Time in seconds.
-
         except ElementNotSelectableException:
             # browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
             go_down = True
