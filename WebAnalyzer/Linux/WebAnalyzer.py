@@ -239,7 +239,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -268,7 +268,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -653,7 +653,7 @@ def detect_live_overX(browser, min_amount):
     xpath_container = "//span[text()= " + str(goals)+ "]/ancestor::div[starts-with(@class,'gl-MarketGroup ') " \
                                                       "and contains(.,'Match Goals')]"
     print('OVER '+str(goals)) # Flag
-    
+
     container = browser.find_element_by_xpath(xpath_container)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
     i = 0
