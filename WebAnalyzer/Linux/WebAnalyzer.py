@@ -82,7 +82,9 @@ XPATH_LIVE_TEAM_1 = '//div[@class="ml1-StatWheel_Team1Text "] | //span[@class="m
 XPATH_LIVE_TEAM_2 = '//div[@class="ml1-StatWheel_Team2Text "] | //span[@class="ml1-SoccerStatsBar_MiniBarValue ml1-SoccerStatsBar_MiniBarValue-2 "]'
 XPATH_LIVE_OVER05_HT_CONTAINER = '//span[contains(., "First Half Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
 XPATH_LIVE_CORNERS = '//div[@class="ipe-SoccerGridColumn ipe-SoccerGridColumn_ICorner "]//div[@class="ipe-SoccerGridCell "]'
-XPATH_LIVE_OVER_X_CONTAINER = '//span[contains(., "Match Goals")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_LIVE_OVER_X_CONTAINER = '//span[text()= "Match Goals"]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_LIVE_OVER_X_CONTAINER2 = '//span[text()= "Alternative Match Goals"]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+
 XPATH_MATCH_LIVE_BUTTON = '//div[contains(.,"Match Live") and starts-with(@class, "lv-ButtonBar_MatchLive ")]'
 
 
@@ -237,7 +239,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -266,7 +268,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -624,6 +626,15 @@ def detect_live_over05ht(browser, min_amount):
     return over05_ht
 
 
+def number_of_goals(browser):
+    goals_counter = 0
+
+    goals = browser.find_elements_by_xpath('//div[@class="ml1-ScoreHeader_Score "]')
+    for goal in goals:
+        goals_counter += float(goal)
+
+    return goals_counter
+
 def detect_live_overX(browser, min_amount):
     overX = [-1, '']
 
@@ -637,7 +648,13 @@ def detect_live_overX(browser, min_amount):
         # end if
     # end if
 
-    container = browser.find_element_by_xpath(XPATH_LIVE_OVER_X_CONTAINER)
+    goals = number_of_goals(browser) + 0.5
+
+    xpath_container = "//span[text()= " + str(goals)+ "]/ancestor::div[starts-with(@class,'gl-MarketGroup ') " \
+                                                      "and contains(.,'Match Goals')]"
+    print('OVER '+str(goals)) # Flag
+
+    container = browser.find_element_by_xpath(xpath_container)
     section = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_OPTION)
     i = 0
 
@@ -875,6 +892,7 @@ def get_matches(browser, league):
         msg = LINE + match.text + LINE
         print(msg)  # Flag
         sleep(delay[randint(0, 4)])  # Time in seconds.
+
         # Check if match is inside 'match_dict' and storing it in from_dict:
         if match.text in match_dict:
             counter+=1
@@ -971,10 +989,10 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = False
+    dict_updated = True
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         #sleep(30)  # 30 secs
