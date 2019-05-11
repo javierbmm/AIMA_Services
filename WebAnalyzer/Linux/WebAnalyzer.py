@@ -879,6 +879,7 @@ def get_matches(browser, league):
         return match_dict
     MATCHES = browser.find_elements_by_xpath(XPATH_MATCH_CONTAINER)
     # List of matches
+    print(len(MATCHES))
     counter = 0
     times = 0
     go_down = False
