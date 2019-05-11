@@ -239,7 +239,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -268,7 +268,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -712,7 +712,7 @@ def extract_live_matches_information(browser, match_dict):
     print('got it')
     # else
     # update dict:
-    match_dict[name] = from_dict;
+    match_dict[name] = from_dict
     # variables initialization
     e1_ataques = ''
     e2_ataques = ''
@@ -1035,7 +1035,7 @@ def main():
             number_of_errors+=1
             continue
         finally:
-            if number_of_errors > 5:
+            if number_of_errors > 10:
                 bot_send_msg_to("FROM: AIMA_Services\n->Something happened.", JAVIER_ID)
                 number_of_errors = 0
                 #Open website again:
