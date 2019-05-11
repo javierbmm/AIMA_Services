@@ -1003,7 +1003,7 @@ def main():
             now = datetime.now()
             click_home_button(browser)
             print(now >= tomorrow_0h)
-            if now >= tomorrow_0h:
+            if now >= tomorrow_0h: 
                 dict_updated = False
                 print('pregames')
                 # Updating match_dict
