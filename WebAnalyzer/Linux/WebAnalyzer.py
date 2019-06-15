@@ -692,6 +692,9 @@ def extract_live_matches_information(browser, match_dict):
     else:
         return live_match_info_
 
+
+    print("***** FEE = "+str(float(fee)))
+
     if float(fee) < 0: return live_match_info_
     print('got it')
     # else
