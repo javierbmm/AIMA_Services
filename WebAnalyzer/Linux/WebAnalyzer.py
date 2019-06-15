@@ -314,7 +314,6 @@ def open_website(url):
 
     return browser
 
-
 def click_español(browser):
     # Navigation:
     sleep(delay[randint(0, 4)])  # Time in seconds.
@@ -324,7 +323,6 @@ def click_español(browser):
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
-
 
 def click_futbol_section(browser):
     WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_ESPAÑOL)))
@@ -336,7 +334,6 @@ def click_futbol_section(browser):
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
-
 
 def click_home_button(browser):
     sleep(delay[randint(0, 4)])  # Time in seconds.
@@ -350,7 +347,6 @@ def click_home_button(browser):
 
     return
 
-
 def set_decimal_odds(browser):
     WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_ODDS_DROPDOWN)))
     drop_down = browser.find_element_by_xpath(XPATH_ODDS_DROPDOWN)
@@ -362,7 +358,6 @@ def set_decimal_odds(browser):
 
     return
 
-
 def click_live_button(browser):
     WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_BUTTON)))
     live_section = browser.find_element_by_xpath(XPATH_LIVE_BUTTON)
@@ -372,7 +367,6 @@ def click_live_button(browser):
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return
-
 
 def click_live_general(browser):
     WebDriverWait(browser, 100).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_GENERAL)))
@@ -407,7 +401,6 @@ def click_match_live(browser):
 
     return
 
-
 def get_leagues(browser):
     click_futbol_section(browser)
     click_proximas24hrs(browser)
@@ -418,7 +411,6 @@ def get_leagues(browser):
     WebDriverWait(browser, 250).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
 
     LEAGUES = browser.find_elements_by_xpath(XPATH_LEAGUE)
-
     number_of_leagues = len(LEAGUES)
     counter = 0
     go_down = False
@@ -428,11 +420,12 @@ def get_leagues(browser):
         if go_down: scroll_down(browser, times)
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LEAGUE)))
         league_elements = browser.find_elements_by_xpath(XPATH_LEAGUE)
+        number_of_leagues = len(league_elements)
         league = league_elements[counter]
         msg = LINE + league.text + LINE
         print(msg)
         print(counter)
-        print(len(LEAGUES))
+        print(len(league_elements))
         try:
             sleep(delay[randint(0, 4)])  # Time in seconds.
             league.click()
@@ -462,14 +455,12 @@ def get_leagues(browser):
 
     return match_dict
 
-
 def xpath_exists(xpath, browser):
     try:
         browser.find_element_by_xpath(xpath)
     except NoSuchElementException:
         return False
     return True
-
 
 def detect_btts(browser, min_amount):  # min_amount: 1.80
     btts = -1
@@ -495,7 +486,6 @@ def detect_btts(browser, min_amount):  # min_amount: 1.80
 
     return btts
 
-
 def detect_over25(browser, min_amount):  # min_amount: 1.80
     over25 = -1
 
@@ -520,7 +510,6 @@ def detect_over25(browser, min_amount):  # min_amount: 1.80
         # end if-else
     # end for
     return over25
-
 
 def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
     over05_ht = -1
@@ -572,7 +561,6 @@ def detect_over05_ht(browser, min_amount):  # min_amount: 1.40
 
     return over05_ht
 
-
 def extract_matches_information(browser):
     print('Looking for matches')
     print('->match')
@@ -595,7 +583,6 @@ def extract_matches_information(browser):
     match_info_.append(new_match)
 
     return match_info_
-
 
 def detect_live_over05ht(browser, min_amount):
     over05_ht = -1
@@ -624,7 +611,6 @@ def detect_live_over05ht(browser, min_amount):
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return over05_ht
-
 
 def number_of_goals(browser):
     goals_counter = 0
@@ -667,8 +653,6 @@ def detect_live_overX(browser, min_amount):
     sleep(delay[randint(0, 4)])  # Time in seconds.
 
     return overX
-
-
 
 def extract_live_matches_information(browser, match_dict):
     print('here')
@@ -761,7 +745,6 @@ def extract_live_matches_information(browser, match_dict):
     live_match_info_.append(match)
 
     return live_match_info_
-
 
 def get_live_leagues(browser, match_dict):
     # Searching by LEAGUES:
@@ -867,7 +850,6 @@ def get_live_matches(browser, msg, league, match_dict):
 
     return
 
-
 # Not live matches:
 def get_matches(browser, league):
     print('getmatches')
@@ -931,14 +913,12 @@ def get_matches(browser, league):
     add_match_list_to_dictionary(matches_information, match_dict)
     return match_dict
 
-
 def scroll_down(browser, times):
     # Scroll down using PAGE_DOWN button
     for i in range(times):
         browser.find_element_by_tag_name("html").send_keys(Keys.PAGE_DOWN)
 
     return
-
 
 def save_in_file(file_name, object):
     # open the file for writing
@@ -951,7 +931,6 @@ def save_in_file(file_name, object):
     # here we close the fileObject
     fileObject.close()
 
-
 def load_from_file(file_name):
     # we open the file for reading
     fileObject = open(file_name, 'rb')
@@ -960,13 +939,11 @@ def load_from_file(file_name):
 
     return object
 
-
 def delete_file_content(fName):
     fileObject = open(fName, 'w')
     fileObject.close()
 
     return
-
 
 def test():
     url = 'https://www.bet365.es/'
@@ -975,11 +952,6 @@ def test():
     scroll_down(browser)
 
     return;
-
-
-def main2():
-    return
-
 
 def main():
     import traceback
@@ -1003,7 +975,7 @@ def main():
             now = datetime.now()
             click_home_button(browser)
             print(now >= tomorrow_0h)
-            if now >= tomorrow_0h: 
+            if now >= tomorrow_0h:
                 dict_updated = False
                 print('pregames')
                 # Updating match_dict
@@ -1047,7 +1019,6 @@ def main():
 
         #end try-except
         print("ending while")
-        #sleep(5*60)
 
     #end while
 
