@@ -477,7 +477,7 @@ def detect_btts(browser, min_amount):  # min_amount: 1.80
     for item in section:
         yes_or_no = item.find_element_by_xpath('.' + XPATH_BTTS_YES_NO).text
         fee = item.find_element_by_xpath('.' + XPATH_BTTS_FEE).text
-        if float(fee) <= float(min_amount) and str(yes_or_no) == 'Yes':
+        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes': # TODO: Change comparator to <= 
             btts = fee
         else:
             continue
