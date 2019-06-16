@@ -677,7 +677,7 @@ def extract_live_matches_information(browser, match_dict):
         return live_match_info_
 
     print("match inside dict")
-    if total_time < 45.0 and not from_dict.is_ht_checked():
+    if total_time < 45.0 and from_dict.is_ht_checked(): #TODO: Add 'not' statement
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
