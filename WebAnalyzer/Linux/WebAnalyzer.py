@@ -618,7 +618,7 @@ def number_of_goals(browser):
 
     goals = browser.find_elements_by_xpath('//div[@class="ml1-ScoreHeader_Score "]')
     for goal in goals:
-        goals_counter += float(goal)
+        goals_counter += float(goal.text)
 
     return goals_counter
 
