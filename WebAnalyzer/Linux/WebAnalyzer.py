@@ -69,6 +69,7 @@ XPATH_LIVE_LEAGUE = '//div[@class="ipo-Competition ipo-Competition-open "]'
 XPATH_LIVE_LEAGUE_NAME = '//div[@class="ipo-CompetitionButton_NameLabel ipo-CompetitionButton_NameLabelHasMarketHeading "]'
 XPATH_LIVE_MATCH = '//div[@class="ipo-ScoreDisplayStandard_Wrapper "]'
 XPATH_LIVE_MATCH_CLICK = '//div[@class="sl-CouponParticipantWithBookCloses_NameContainer "]' #useless
+XPATH_LIVE_MATCH_NAME = '//span[@class="ipo-TeamStack_TeamWrapper "]'
 XPATH_LIVE_NAME = '//div[starts-with(@class,"ipe-GridHeader_FixtureCell ")]'
 XPATH_LIVE_MIN = '//div[@class="ipe-SoccerHeaderLayout_ExtraData "]'
 XPATH_LIVE_ATAQUES = '//div[@class="ml1-StatsCharts_Column ml1-StatsCharts_Column-left "]'
@@ -796,11 +797,13 @@ def get_live_matches(browser, msg, league, match_dict):
 
     while counter < len(MATCHES):
         if go_down: scroll_down(browser, times)
+
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_LIVE_MATCH)))
         league_xpath = "//div[contains(text(),'"+league_name+"')]/ancestor::div[@class='ipo-Competition ipo-Competition-open ']"
         league = browser.find_element_by_xpath(league_xpath)
         matches_elements = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
         if counter >= len(matches_elements): break
+
         try:
             match = matches_elements[counter]
             print(match.text)
@@ -809,6 +812,15 @@ def get_live_matches(browser, msg, league, match_dict):
             #browser.save_screenshot("error.png")
             counter += 1
             continue
+
+        # Checking if the match is inside the dictionary.
+        team_1 = match.find_elements_by_xpath(XPATH_LIVE_MATCH_NAME)[0]
+        team_2 = match.find_elements_by_xpath(XPATH_LIVE_MATCH_NAME)[1]
+        match_name = team_1.text + ' v ' + team_2.text
+        match_name_inversed = team_2.text + ' v ' + team_1.text # Just in case
+        if match_name not in match_dict and match_name_inversed not in match_dict:
+            continue
+
         try:
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
@@ -965,7 +977,7 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = False
+    dict_updated = True
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
