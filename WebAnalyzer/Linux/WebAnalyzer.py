@@ -813,7 +813,7 @@ def get_live_matches(browser, msg, league, match_dict):
             continue
 
         # Checking if the match is inside the dictionary.
-        teams = matches_elements[counter].find_elements_by_xpath(XPATH_LIVE_MATCH_NAME)
+        teams = matches_elements[counter].find_elements_by_xpath('.' + XPATH_LIVE_MATCH_NAME)
         match_name = teams[0].text + ' v ' + teams[1].text
         match_name_inversed = teams[1].text + ' v ' + teams[0].text # Just in case
         if match_name not in match_dict and match_name_inversed not in match_dict:
