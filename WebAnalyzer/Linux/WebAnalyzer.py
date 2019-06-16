@@ -240,7 +240,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    send_msg_by_groups_to(bot_message, OTHER_ID)
+    #send_msg_by_groups_to(bot_message, OTHER_ID)  # TODO: Uncomment this
 
     return
 
@@ -269,7 +269,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = AIMA_ID
+    bot_chatID = JAVIER_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -682,14 +682,14 @@ def extract_live_matches_information(browser, match_dict):
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
         ht_checked = True
-        from_dict.set_ht_checked(ht_checked)
+        match_dict.get(name).set_ht_checked(True)
     elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
         ft_checked = True
-        from_dict.set_ft_checked(ft_checked)
+        match_dict.get(name).set_ft_checked(True)
     else:
         return live_match_info_
 
@@ -980,7 +980,7 @@ def main():
     dict_updated = False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+    tomorrow_0h = datetime.now() # datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
     while True:
         #sleep(30)  # 30 secs
