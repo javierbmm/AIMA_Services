@@ -806,7 +806,6 @@ def get_live_matches(browser, msg, league, match_dict):
 
         try:
             match = matches_elements[counter]
-            print(match.text)
         except Exception:
             print(traceback.print_exc())
             #browser.save_screenshot("error.png")
@@ -820,6 +819,7 @@ def get_live_matches(browser, msg, league, match_dict):
         match_name_inversed = team_2.text + ' v ' + team_1.text # Just in case
         if match_name not in match_dict and match_name_inversed not in match_dict:
             counter += 1
+            print(match_name)
             continue
 
         try:
