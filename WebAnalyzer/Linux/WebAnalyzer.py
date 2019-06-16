@@ -240,7 +240,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    #send_msg_by_groups_to(bot_message, OTHER_ID)
+    send_msg_by_groups_to(bot_message, OTHER_ID)
 
     return
 
@@ -269,7 +269,7 @@ def bot_send_msg(msg):
     bot_token = '656778310:AAHyZaNhAQwVYitZcIHAfi2TmQN_CBKdOIU'
     # Insert your ID below.
     # AIMA_ID = '700187299' <- for AIMA_Services
-    bot_chatID = JAVIER_ID
+    bot_chatID = AIMA_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + msg
     response = requests.get(send_text)
 
@@ -478,7 +478,7 @@ def detect_btts(browser, min_amount):  # min_amount: 1.80
     for item in section:
         yes_or_no = item.find_element_by_xpath('.' + XPATH_BTTS_YES_NO).text
         fee = item.find_element_by_xpath('.' + XPATH_BTTS_FEE).text
-        if float(fee) >= float(min_amount) and str(yes_or_no) == 'Yes': # TODO: Change comparator to <= 
+        if float(fee) <= float(min_amount) and str(yes_or_no) == 'Yes': 
             btts = fee
         else:
             continue
@@ -647,7 +647,7 @@ def detect_live_overX(browser, min_amount):
 
     overX[1] = section[0].text
     amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
-    if float(amount[0].text) <= float(min_amount):  # TODO: Change to >=
+    if float(amount[0].text) >= float(min_amount): 
         overX[0] = amount[0].text
         print('over X amount: ' + overX[0])
 
@@ -677,13 +677,13 @@ def extract_live_matches_information(browser, match_dict):
         return live_match_info_
 
     print("match inside dict")
-    if total_time < 45.0 and from_dict.is_ht_checked(): #TODO: Add 'not' statement
+    if total_time < 45.0 and not from_dict.is_ht_checked(): 
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
         ht_checked = True
         from_dict.set_ht_checked(ht_checked)
-    elif total_time >= 45.0: # and not from_dict.is_ft_checked(): #TODO: Uncomment this
+    elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
@@ -977,7 +977,7 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = True
+    dict_updated = False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
