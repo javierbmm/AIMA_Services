@@ -818,9 +818,9 @@ def get_live_matches(browser, msg, league, match_dict):
         match_name_inversed = teams[1].text + ' v ' + teams[0].text # Just in case
         if match_name not in match_dict and match_name_inversed not in match_dict:
             counter += 1
-            print(match_name)
             continue
 
+        print(match_name)
         try:
             sleep(delay[randint(0, 4)])  # Time in seconds.
             match.click()
