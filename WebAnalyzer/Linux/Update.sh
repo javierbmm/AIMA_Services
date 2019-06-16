@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Updating..."
-sudo su
 pkill chrome
 pkill chromedriver
 pkill python3
