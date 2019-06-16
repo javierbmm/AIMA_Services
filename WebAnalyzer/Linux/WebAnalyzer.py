@@ -647,7 +647,7 @@ def detect_live_overX(browser, min_amount):
 
     overX[1] = section[0].text
     amount = container.find_elements_by_xpath('.' + XPATH_OVER05_HT_FEE)
-    if float(amount[0].text) >= float(min_amount):  # Index 0 for the next goal
+    if float(amount[0].text) <= float(min_amount):  # TODO: Change to >=
         overX[0] = amount[0].text
         print('over X amount: ' + overX[0])
 
