@@ -667,7 +667,7 @@ def extract_live_matches_information(browser, match_dict):
     ft_checked = False
     minutes = time[0]
     seconds = time[1]
-    total_time = float(minutes) + float(seconds) / 60
+    total_time = float(minutes) + (float(seconds) / 60)
     live_match_info_ = []
     from_dict = ''
     # Check if match is inside 'match_dict' and storing it in from_dict:
@@ -677,7 +677,7 @@ def extract_live_matches_information(browser, match_dict):
         return live_match_info_
 
     print("match inside dict")
-    if total_time < 45.0 and not from_dict.is_ht_checked(): 
+    if total_time < 45.0 and not from_dict.is_ht_checked():
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
@@ -694,7 +694,8 @@ def extract_live_matches_information(browser, match_dict):
         return live_match_info_
 
 
-    print("***** FEE = "+str(float(fee)))
+    msg = "***** FEE = "+str(float(fee))
+    bot_send_msg(msg)
 
     if float(fee) < 0: return live_match_info_
     print('got it')
@@ -977,10 +978,10 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = False
+    dict_updated = True
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() # datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
 
     while True:
         #sleep(30)  # 30 secs
