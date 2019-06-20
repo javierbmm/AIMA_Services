@@ -966,7 +966,7 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = True
+    dict_updated = False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
     tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
