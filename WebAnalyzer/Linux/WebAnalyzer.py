@@ -969,7 +969,7 @@ def main():
     dict_updated = False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
+    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
 
     while True:
         #sleep(30)  # 30 secs
