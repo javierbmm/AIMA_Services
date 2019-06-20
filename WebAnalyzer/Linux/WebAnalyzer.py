@@ -447,7 +447,7 @@ def get_leagues(browser):
         # End try-except
 
         # Extracting MATCHES:
-        match_dict.update(get_matches(browser, msg))
+        match_dict.update(get_matches(browser, msg, match_dict))
         browser.back()
         click_futbol_section(browser)
         click_proximas24hrs(browser)
@@ -663,8 +663,6 @@ def extract_live_matches_information(browser, match_dict):
     option = ''
     fee = -1
     time = str(min).split(':')
-    ht_checked = False
-    ft_checked = False
     minutes = time[0]
     seconds = time[1]
     total_time = float(minutes) + (float(seconds) / 60)
@@ -681,20 +679,18 @@ def extract_live_matches_information(browser, match_dict):
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
-        ht_checked = True
-        match_dict.get(name).set_ht_checked(True)
+        if fee > 0: match_dict.get(name).set_ht_checked(True)
     elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
-        ft_checked = True
-        match_dict.get(name).set_ft_checked(True)
+        if fee > 0: match_dict.get(name).set_ft_checked(True)
     else:
         return live_match_info_
 
 
-    msg = "***** FEE = "+str(float(fee))
+    msg = "FEE="+str(float(fee))
     bot_send_msg(msg)
 
     if float(fee) < 0: return live_match_info_
@@ -867,9 +863,8 @@ def get_live_matches(browser, msg, league, match_dict):
     return
 
 # Not live matches:
-def get_matches(browser, league):
+def get_matches(browser, league, match_dict):
     print('getmatches')
-    match_dict = {}
 
     try:
         WebDriverWait(browser, 150).until(EC.presence_of_element_located((By.XPATH, XPATH_MATCH)))
@@ -918,13 +913,6 @@ def get_matches(browser, league):
         sleep(delay[randint(0, 4)])  # Time in seconds.
         browser.back()
     # End while
-
-    messages = []
-    messages.append(league)
-    for match in matches_information: messages.append(match.to_string())
-    if not matches_information: print('**********False*************')  # Flag
-    if matches_information: send_msg_by_groups(messages)  # Don't send the message if the matches list is empty
-    sleep(delay[randint(0, 4)])  # Time in seconds.
 
     add_match_list_to_dictionary(matches_information, match_dict)
     return match_dict
@@ -1001,6 +989,11 @@ def main():
                 delete_file_content(FILE)
                 save_in_file(FILE, match_dict)
                 dict_updated = True
+                # Sending matches to Telegram bot
+                messages = []
+                for item in match_dict:
+                    messages.extend(item.to_string)
+                send_msg_by_groups(messages)
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
                 tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
