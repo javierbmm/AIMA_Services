@@ -992,7 +992,8 @@ def main():
                 # Sending matches to Telegram bot
                 messages = []
                 for item in match_dict:
-                    messages.extend(match_dict[item].to_string())
+                    msg = match_dict[item].to_string()
+                    messages.extend(msg)
                 send_msg_by_groups(messages)
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
