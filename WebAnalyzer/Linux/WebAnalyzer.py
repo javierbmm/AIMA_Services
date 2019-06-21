@@ -993,7 +993,7 @@ def main():
                 messages = []
                 for item in match_dict:
                     msg = match_dict[item].to_string()
-                    messages.extend(msg)
+                    messages.append(msg)
                 send_msg_by_groups(messages)
                 # Updating tomorrows date:
                 tomorrow = date.today() + timedelta(days=1)
