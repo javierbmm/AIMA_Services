@@ -42,7 +42,7 @@ XPATH_ODDS_DROPDOWN = "//a[@class='hm-DropDownSelections_Button hm-DropDownSelec
 XPATH_ODDS_DECIMAL = "//a[starts-with(@class,'hm-DropDownSelections_Item ') and contains(.,'Decimal')]"
 # BTTS:
 BTTS_STRING = 'BTTS'
-XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gl-MarketGroup "]'
+XPATH_BTTS_CONTAINER = '//span[contains(text(), "Both Teams to Score")]/ancestor::div[@class="gll-MarketGroup "]'
 XPATH_BTTS = '//span[contains(text(), "Both Teams to Score")]' # Useless
 XPATH_BTTS_OPTION = '//div[@class="gl-Participant gl-Participant_General gl-Market_CN-2 "]'
 XPATH_BTTS_FEE = '//span[@class="gl-Participant_Odds"]'
@@ -52,7 +52,7 @@ XPATH_BTTS_DATE = '//div[starts-with(@class,"cm-MarketGroupExtraData_TimeStamp "
 XPATH_CLOCK = '//div[@class="pi-CouponParticipantClockInPlay_GameTimerWrapper "]'
 # OVER 2.5:
 OVER25_STRING = 'OVER 2,5'
-XPATH_OVER25_CONTAINER = '//span[contains(., "Goals Over/Under")]/ancestor::div[starts-with(@class,"gl-MarketGroup ")]'
+XPATH_OVER25_CONTAINER = '//span[contains(., "Goals Over/Under")]/ancestor::div[starts-with(@class,"gll-MarketGroup ")]'
 XPATH_OVER25_SECTION = '//div[starts-with(@class,"gl-MarketValuesExplicit2 gl-Market_General gl-Market_PWidth-37-5 ")]'
 XPATH_OVER25_OPTION = '//span[@class="gl-ParticipantRowValue_Name"]'
 XPATH_OVER25_FEE = '//span[@class="gl-ParticipantOddsOnly_Odds"]'
