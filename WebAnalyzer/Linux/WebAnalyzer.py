@@ -1015,15 +1015,21 @@ def main():
             dict_updated = True
         except Exception:
             print(traceback.print_exc())
+            file1 = open("error_log.txt", "a")  # append mode
+            file1.write(traceback.print_exc())
+            file1.close()
+
+            bot_send_msg_to(traceback.print_exc(),JAVIER_ID)
             number_of_errors+=1
             continue
         finally:
             if number_of_errors > 10:
-                bot_send_msg_to("FROM: AIMA_Services\n->Something happened.", JAVIER_ID)
+                bot_send_msg_to("FROM: AIMA Services \n Something happened.", JAVIER_ID)
                 number_of_errors = 0
                 #Open website again:
                 browser.quit()
                 browser = open_website(url)
+                sleep(delay[randint(0, 4)])  # Time in seconds.
                 click_español(browser)
                 set_decimal_odds(browser)
 
