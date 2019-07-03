@@ -1013,10 +1013,10 @@ def main():
             delete_file_content(FILE)
             save_in_file(FILE, match_dict)
             dict_updated = True
-        except Exception:
+        except Exception as e:
             print(traceback.print_exc())
             file1 = open("error_log.txt", "a")  # append mode
-            file1.write(traceback.print_exc())
+            file1.write(str(e))
             file1.close()
 
             bot_send_msg_to(traceback.print_exc(),JAVIER_ID)
