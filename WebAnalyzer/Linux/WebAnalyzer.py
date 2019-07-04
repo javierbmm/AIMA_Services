@@ -1019,7 +1019,7 @@ def main():
             file1.write(str(e))
             file1.close()
 
-            bot_send_msg_to(traceback.print_exc(),JAVIER_ID)
+            bot_send_msg_to(str(e), JAVIER_ID)
             number_of_errors+=1
             continue
         finally:
