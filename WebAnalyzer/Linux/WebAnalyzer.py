@@ -637,7 +637,7 @@ def detect_live_overX(browser, min_amount):
 
     goals = number_of_goals(browser) + 0.5
 
-    xpath_container = "//span[text()= " + str(goals)+ "]/ancestor::div[starts-with(@class,'gl-MarketGroup ') " \
+    xpath_container = "//span[text()= " + str(goals)+ "]/ancestor::div[starts-with(@class,'gll-MarketGroup ') " \
                                                       "and contains(.,'Match Goals')]"
     print('OVER '+str(goals)) # Flag
 
@@ -967,10 +967,10 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = False
+    dict_updated = True # TODO: Set to False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime.now() #datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
+    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
 
     while True:
         #sleep(30)  # 30 secs
