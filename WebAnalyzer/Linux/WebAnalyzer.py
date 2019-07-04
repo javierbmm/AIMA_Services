@@ -784,6 +784,7 @@ def get_live_matches(browser, msg, league, match_dict):
         return
     MATCHES = league.find_elements_by_xpath('.' + XPATH_LIVE_MATCH)
     print('got matches')
+    sleep(delay[randint(0, 4)])  # Time in seconds.
     if xpath_exists(XPATH_MATCH_LIVE_BUTTON, browser): click_match_live(browser)
     # List of matches
     counter = 0
