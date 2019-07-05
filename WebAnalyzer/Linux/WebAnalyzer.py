@@ -679,13 +679,13 @@ def extract_live_matches_information(browser, match_dict):
         print('under ht')
         fee = detect_live_over05ht(browser, 1.50)
         option = 'OVER 0,5 HT'
-        if fee > 0: match_dict.get(name).set_ht_checked(True)
+        if float(fee) > 0: match_dict.get(name).set_ht_checked(True)
     elif total_time >= 45.0 and not from_dict.is_ft_checked():
         print('over ht')
         result = detect_live_overX(browser, 1.50)
         fee = result[0]
         option = 'OVER ' + str(result[1])
-        if fee > 0: match_dict.get(name).set_ft_checked(True)
+        if float(fee) > 0: match_dict.get(name).set_ft_checked(True)
     else:
         return live_match_info_
 
