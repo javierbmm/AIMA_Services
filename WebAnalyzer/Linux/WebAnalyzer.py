@@ -240,7 +240,7 @@ def send_msg_by_groups(bot_message):
     print('Sending information')
     bot_send_msg(msg)
 
-    #send_msg_by_groups_to(bot_message, OTHER_ID)  # TODO: Uncomment this
+    send_msg_by_groups_to(bot_message, OTHER_ID) 
 
     return
 
@@ -690,9 +690,6 @@ def extract_live_matches_information(browser, match_dict):
         return live_match_info_
 
 
-    msg = "FEE="+str(float(fee))
-    bot_send_msg(msg)
-
     if float(fee) < 0: return live_match_info_
     print('got it')
     # else
@@ -967,10 +964,10 @@ def main():
     sleep(delay[randint(0,4)]) # Time in seconds.
     set_decimal_odds(browser)
     number_of_errors = 0
-    dict_updated = True # TODO: Set to False
+    dict_updated = False
     match_dict = {}
     tomorrow = date.today() + timedelta(days=1)
-    tomorrow_0h = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
+    tomorrow_0h = datetime.now()  # datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) #TODO: Change this
 
     while True:
         #sleep(30)  # 30 secs
